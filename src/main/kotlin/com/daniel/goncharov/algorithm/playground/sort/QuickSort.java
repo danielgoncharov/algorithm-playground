@@ -20,7 +20,7 @@ public class QuickSort implements Sort {
             swap(array, originalLeft, originalRight);
             return;
         }
-        int pivot = calculatePivot(array,originalLeft,originalRight);
+        int pivot = calculatePivot(originalLeft,originalRight);
         int left = originalLeft;
         int right = originalRight;
         while (right - left > 0) {
@@ -51,7 +51,7 @@ public class QuickSort implements Sort {
     }
 
 
-    private int calculatePivot(int[] array, int originalLeft, int originalRight) {
+    private int calculatePivot(int originalLeft, int originalRight) {
         return originalLeft;
     }
 
