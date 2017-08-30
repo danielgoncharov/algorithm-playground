@@ -1,10 +1,13 @@
 package com.daniel.goncharov.algorithm.playground.sort.merge;
 
+import com.daniel.goncharov.algorithm.playground.sort.Sort;
+
 import java.util.Arrays;
 
-public class MergeSort {
+public class MergeSort implements Sort {
 
-    int[] mergeSort(int[] array) {
+    @Override
+    public int[] sort(int[] array) {
         if (array == null || array.length <= 1) {
             return array;
         }
@@ -19,8 +22,8 @@ public class MergeSort {
         int[] firstPart = Arrays.copyOfRange(array, 0, separatorIndex); //always 1 bigger than second
         int[] secondPart = Arrays.copyOfRange(array, separatorIndex, array.length);
 
-        int[] sortedFirstPart = mergeSort(firstPart);
-        int[] sortedSecondPart = mergeSort(secondPart);
+        int[] sortedFirstPart = sort(firstPart);
+        int[] sortedSecondPart = sort(secondPart);
         int[] mergedArray = new int[array.length];
 
         int firstIndex = 0;
