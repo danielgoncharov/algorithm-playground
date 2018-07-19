@@ -1,7 +1,5 @@
 package com.daniel.goncharov.algorithm.playground.sort;
 
-import java.util.Arrays;
-
 public class QuickSort implements Sort {
 
     @Override
@@ -20,7 +18,7 @@ public class QuickSort implements Sort {
             swap(array, originalLeft, originalRight);
             return;
         }
-        int pivot = calculatePivot(originalLeft,originalRight);
+        int pivot = calculatePivot(originalLeft, originalRight);
         int left = originalLeft;
         int right = originalRight;
         while (right - left > 0) {
