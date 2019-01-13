@@ -17,7 +17,8 @@ public class PainterPartitionProblem {
                 max = mid;
             }
         }
-        return (min / speed) ;
+        long result=speed*(long)min;
+        return (int)(result% 10000003);
     }
 
     private int findAmountOfPainters(int maxLengthPerPainter, ArrayList<Integer> board) {
