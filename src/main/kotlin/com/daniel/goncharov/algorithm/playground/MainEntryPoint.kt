@@ -1,5 +1,5 @@
 package com.daniel.goncharov.algorithm.playground
 
-fun main(args: Array<String>) {
+fun main() {
     println("Hello, world!")
 }
