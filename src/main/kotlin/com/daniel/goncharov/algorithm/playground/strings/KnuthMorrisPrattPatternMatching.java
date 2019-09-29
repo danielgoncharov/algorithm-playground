@@ -1,5 +1,9 @@
 package com.daniel.goncharov.algorithm.playground.strings;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class KnuthMorrisPrattPatternMatching {
 
     public int[] createLpsArray(String pattern) {
@@ -53,5 +57,78 @@ public class KnuthMorrisPrattPatternMatching {
         } else {
             return -1;
         }
+    }
+
+    //gredy
+    public ArrayList<String> fullJustify(ArrayList<String> words, int maxLength) {
+        ArrayList<String> result = new ArrayList<>();
+        List<String> line = new ArrayList<>();
+        int length = 0;
+        for (int index = 0; index < words.size(); index++) {
+            String word = words.get(index).trim();
+            if (takesTheWholeLine(word, maxLength)) {
+                result.add(leftAlign(word, maxLength));
+                continue;
+            }
+            if (length + line.size() + word.length() > maxLength) {
+                result.add(justify(line, maxLength, length));
+                line.clear();
+                length = 0;
+            }
+            line.add(word);
+            length += word.length();
+            if (index == words.size() - 1) {
+                String string = buildString(line);
+                result.add(leftAlign(string, maxLength));
+            }
+        }
+        return result;
+    }
+
+    private String buildString(List<String> line) {
+        String result = "";
+        for (int index = 0; index < line.size(); index++) {
+            String word = line.get(index);
+            result += word;
+            if (index != line.size() - 1) {
+                result += " ";
+            }
+        }
+        return result;
+    }
+
+    private boolean takesTheWholeLine(String word, int maxLength) {
+        return word.length() + 1 >= maxLength;
+    }
+
+    private String leftAlign(String word, int maxLength) {
+        int index = word.length();
+        while (index < maxLength) {
+            word += " ";
+            index++;
+        }
+        return word;
+    }
+
+    private String justify(List<String> line, int maxLength, int length) {
+        if (line.size() == 1) {
+            return leftAlign(line.get(0), maxLength);
+        }
+        int tabsBetweenWords = (maxLength - length) / (line.size() - 1);
+        int remainingTabs = (maxLength - length) % (line.size()-1);
+        String tabs = String.join("", Collections.nCopies(tabsBetweenWords, " "));
+        String result = "";
+        for (int index = 0; index < line.size(); index++) {
+            String word = line.get(index);
+            result += word;
+            if (index != line.size() - 1) {
+                result += tabs;
+            }
+            if (remainingTabs != 0) {
+                result += " ";
+                remainingTabs--;
+            }
+        }
+        return result;
     }
 }
