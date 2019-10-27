@@ -1,6 +1,5 @@
 package com.daniel.goncharov.algorithm.playground.two.pointers
 
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
