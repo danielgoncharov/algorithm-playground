@@ -15,14 +15,4 @@ public class RemoveDuplicates {
         currentNode.next = null;
         return input;
     }
-
-    public static class ListNode {
-        public int val;
-        public ListNode next;
-
-        public ListNode(int x) {
-            val = x;
-            next = null;
-        }
-    }
 }
