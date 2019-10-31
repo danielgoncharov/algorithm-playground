@@ -21,7 +21,7 @@ public class IntersectionofLinkedLists {
         return null;
     }
 
-    public int size(ListNode listNode) {
+    private int size(ListNode listNode) {
         int count = 1;
         ListNode nextNode = listNode.next;
         while (nextNode != null) {
@@ -31,7 +31,7 @@ public class IntersectionofLinkedLists {
         return count;
     }
 
-    public ListNode move(ListNode listNode, int steps) {
+    private ListNode move(ListNode listNode, int steps) {
         ListNode result = listNode;
         if (steps == 0) return result;
         while (steps != 0) {
