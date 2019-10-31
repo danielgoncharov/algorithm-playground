@@ -14,3 +14,8 @@ fun List<Int>.toLinkedList(): ListNode {
     }
     return head!!
 }
+
+fun ListNode.toList(): List<Int> {
+    TODO()
+}
+
