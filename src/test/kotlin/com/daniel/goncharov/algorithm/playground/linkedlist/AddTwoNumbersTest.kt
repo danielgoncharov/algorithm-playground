@@ -5,8 +5,16 @@ import org.junit.Test
 class AddTwoNumbersTest {
     @Test
     fun test1() {
-        val listA = arrayListOf(9, 9, 1).toLinkedList()
-        val listB = arrayListOf(9, 9, 9).toLinkedList()
-        val result = AddTwoNumbers().addTwoNumbers(listA, listB)
+        val listNode1 = ListNode(0)
+        val listNode2 = ListNode(1)
+        val listNode3 = ListNode(2)
+        val listNode4 = ListNode(4)
+        val listNode5 = ListNode(5)
+        listNode1.next = listNode2
+        listNode2.next = listNode3
+        listNode3.next = listNode4
+        listNode4.next = listNode5
+        listNode5.next = listNode1
+        val result = ListCycle().detectCycle(listNode1)
     }
 }
