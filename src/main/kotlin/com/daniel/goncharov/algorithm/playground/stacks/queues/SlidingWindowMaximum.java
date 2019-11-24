@@ -18,7 +18,9 @@ public class SlidingWindowMaximum {
             if (deque.isEmpty() || input.get(deque.peekFirst()) < currentElement) {
                 deque.clear();
             } else {
-                while (deque.isEmpty() || input.get(deque.peekLast()) <= currentElement) deque.pollLast();
+                while (!deque.isEmpty() && input.get(deque.peekLast()) <= currentElement) {
+                    deque.pollLast();
+                }
             }
             deque.add(index);
             if (index >= swSize - 1) result.add(input.get(deque.peekFirst()));
