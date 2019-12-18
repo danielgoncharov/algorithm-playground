@@ -6,37 +6,25 @@ import java.util.Collections;
 public class Subset {
 
     public ArrayList<ArrayList<Integer>> subsets(ArrayList<Integer> numbers) {
-        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> output = new ArrayList<>();
+        output.add(new ArrayList<>());
+        if (numbers.size() == 0) return output;
         Collections.sort(numbers);
-        findSubset(0, numbers, new ArrayList<>(), result);
-        return result;
+        generate(numbers, output, new ArrayList<>(), 0);
+        return output;
     }
 
-    public void findSubset(
-            int currentIndex,
+    private void generate(
             ArrayList<Integer> numbers,
-            ArrayList<Integer> set,
-            ArrayList<ArrayList<Integer>> result
+            ArrayList<ArrayList<Integer>> output,
+            ArrayList<Integer> temp,
+            int index
     ) {
-        if (currentIndex == numbers.size()) {
-            result.add(set);
-            return;
+        for (int i = index; i < numbers.size(); i++) {
+            temp.add(numbers.get(i));
+            output.add(new ArrayList<>(temp));
+            generate(numbers, output, temp, i + 1);
+            temp.remove(temp.size() - 1);
         }
-        findSubset(
-                currentIndex + 1,
-                numbers,
-                set,
-                result
-        );
-        ArrayList<Integer> setWithElement = new ArrayList<>(set);
-        setWithElement.add(numbers.get(currentIndex));
-        findSubset(
-                currentIndex + 1,
-                numbers,
-                setWithElement,
-                result
-        );
-
     }
-
 }
