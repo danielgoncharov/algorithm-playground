@@ -6,9 +6,9 @@ class CombinationSumTest {
 
     @Test
     fun shouldFindGeneric() {
-        val list = arrayListOf(15, 8, 15, 10, 19, 18, 10, 3, 11, 7, 17 )
+        val list = arrayListOf(6, 6, 3, 3, 6, 5 )
 
-        val result = CombinationSum2().combinationSum(list, 33)
+        val result = Subsets2().subsetsWithDup(list)
     }
 
 }
