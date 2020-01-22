@@ -6,7 +6,7 @@ class CombinationSumTest {
 
     @Test
     fun shouldFindGeneric() {
-        val list = arrayListOf(6, 6, 3, 3, 6, 5 )
+        val list = arrayListOf(6, 6, 3, 3, 6, 5)
 
         val result = Subsets2().subsetsWithDup(list)
     }
