@@ -27,6 +27,7 @@ public class NQueens {
             for (int column = 0; column < number; column++) {
                 if (queensColumn.contains(column)) continue;
                 if (isUnderDiagonalAttack(row, column, queensRow, queensColumn)) continue;
+                if (hasSkippedTheRow(queensRow, row)) return;
                 queensRow.add(row);
                 queensColumn.add(column);
                 backtrack(queensRow, queensColumn, number, result);
@@ -34,6 +35,11 @@ public class NQueens {
                 queensColumn.remove(queensColumn.size() - 1);
             }
         }
+    }
+
+    private boolean hasSkippedTheRow(List<Integer> queensRow, int row) {
+        if (queensRow.isEmpty()) return false;
+        return Math.abs(row - queensRow.get(queensRow.size() - 1)) > 1;
     }
 
     private ArrayList<String> createResult(List<Integer> queensRow, List<Integer> queensColumn, int number) {
