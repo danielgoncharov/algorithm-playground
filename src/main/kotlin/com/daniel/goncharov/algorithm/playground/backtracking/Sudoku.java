@@ -28,7 +28,7 @@ public class Sudoku {
                 if (character != '.') continue;
                 for (int number = 1; number < 10; number++) {
                     if (!isUnique(number, board, rowIndex, columnIndex)) continue;
-                    row.set(columnIndex, (char) ('0' + number));//TODO check cast to char
+                    row.set(columnIndex, (char) ('0' + number));
                     backtrack(board, rowIndex, columnIndex);
                     if (isSolutionFound) return;
                     row.set(columnIndex, '.');
@@ -42,7 +42,7 @@ public class Sudoku {
                              int rowIndex,
                              int columnIndex) {
         List<Character> numbersMap = new ArrayList<>();
-        numbersMap.add((char) number);
+        numbersMap.add((char) ('0' + number));
         ArrayList<Character> row = board.get(rowIndex);
         for (int index = 0; index < row.size(); index++) {
             Character character = row.get(index);
