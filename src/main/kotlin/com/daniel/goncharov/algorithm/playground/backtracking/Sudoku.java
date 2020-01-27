@@ -50,17 +50,18 @@ public class Sudoku {
             if (numbersMap.contains(character)) return false;
             numbersMap.add(character);
         }
+
         numbersMap.clear();
-        numbersMap.add((char) number);
+        numbersMap.add((char) ('0' + number));
         for (int index = 0; index < row.size(); index++) {
             Character character = board.get(index).get(columnIndex);
             if (character == '.') continue;
             if (numbersMap.contains(character)) return false;
             numbersMap.add(character);
         }
-        numbersMap.clear();
-        numbersMap.add((char) number);
 
+        numbersMap.clear();
+        numbersMap.add((char) ('0' + number));
         int startRowIndex = (rowIndex / 3) * 3;
         int startColumnIndex = (columnIndex / 3) * 3;
         for (int rowI = startRowIndex; rowI < startRowIndex + 3; rowI++) {
