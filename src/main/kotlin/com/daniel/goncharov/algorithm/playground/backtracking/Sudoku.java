@@ -40,9 +40,7 @@ public class Sudoku {
             if (isSolutionFound) return;
             int value = row.get(columnIndex);
             row.set(columnIndex, '.');
-            if (value == '9') {
-                return;
-            }
+            if (value == '9') return;
         }
     }
 
