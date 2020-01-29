@@ -16,6 +16,7 @@ class SudokuTest {
                 arrayListOf('.', '.', '.', '4', '1', '9', '.', '.', '5'),
                 arrayListOf('.', '.', '.', '.', '8', '.', '.', '7', '9')
         )
-        val result = Sudoku().solveSudoku(input)
+        var list=ArrayList(input)
+        val result = Sudoku().solveSudoku(list)
     }
 }

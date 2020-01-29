@@ -13,26 +13,35 @@ public class Sudoku {
 
     private void backtrack(
             ArrayList<ArrayList<Character>> board,
-            int rowStart,
-            int columnStart) {
-        if (rowStart == board.size() - 1 && columnStart == board.get(rowStart).size() - 1) {
+            int rowIndex,
+            int columnIndex) {
+        ArrayList<Character> lastRow = board.get(board.size() - 1);
+        if (columnIndex == lastRow.size()) {
+            columnIndex = 0;
+            rowIndex++;
+        }
+        if (rowIndex == lastRow.size()) {
             isSolutionFound = true;
             return;
         }
-        for (int rowIndex = rowStart; rowIndex < board.size(); rowIndex++) {
+        ArrayList<Character> row = board.get(rowIndex);
+        Character character = row.get(columnIndex);
+        if (character != '.') {
+            backtrack(board, rowIndex, columnIndex + 1);
+            return;
+        }
+        for (int number = 1; number < 10; number++) {
+            if (!isUnique(number, board, rowIndex, columnIndex)) {
+                if (number == 9) return;
+                else continue;
+            }
+            row.set(columnIndex, (char) ('0' + number));
+            backtrack(board, rowIndex, columnIndex + 1);
             if (isSolutionFound) return;
-            ArrayList<Character> row = board.get(rowIndex);
-            for (int columnIndex = columnStart; columnIndex < row.size(); columnIndex++) {
-                if (isSolutionFound) return;
-                Character character = row.get(columnIndex);
-                if (character != '.') continue;
-                for (int number = 1; number < 10; number++) {
-                    if (!isUnique(number, board, rowIndex, columnIndex)) continue;
-                    row.set(columnIndex, (char) ('0' + number));
-                    backtrack(board, rowIndex, columnIndex);
-                    if (isSolutionFound) return;
-                    row.set(columnIndex, '.');
-                }
+            int value = row.get(columnIndex);
+            row.set(columnIndex, '.');
+            if (value == '9') {
+                return;
             }
         }
     }
