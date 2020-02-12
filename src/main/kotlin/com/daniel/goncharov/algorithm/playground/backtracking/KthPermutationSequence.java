@@ -24,12 +24,10 @@ public class KthPermutationSequence {
         int indexToPull = kth;
         int reminder = 0;
         for (int number = total - 1; number > 1; number--) {
-            reminder = indexToPull % number;
+            if (reminder == 0) reminder = indexToPull % number;
             indexToPull /= number;
-            indexToPull += reminder;
             if (indexToPull == 0) break;
         }
-        if (reminder > 0) indexToPull -= reminder;
 
         String number = numbers.get(indexToPull);
         numbers.remove(indexToPull);
