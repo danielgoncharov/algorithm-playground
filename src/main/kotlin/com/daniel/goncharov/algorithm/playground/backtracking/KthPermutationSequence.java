@@ -7,32 +7,29 @@ public class KthPermutationSequence {
     public String getPermutation(int total, int kth) {
         StringBuilder stringBuilder = new StringBuilder();
         List<String> numbers = new ArrayList<>();
+        long factorial = 1;
         for (int number = 1; number <= total; number++) {
             numbers.add(String.valueOf(number));
+            factorial *= number;
         }
-        solve(total, kth - 1, stringBuilder, numbers);
+        solve(total, factorial, kth - 1, stringBuilder, numbers);
         return stringBuilder.toString();
     }
 
     private void solve(
             int total,
+            long factorial,
             int kth,
             StringBuilder resultBuilder,
             List<String> numbers
     ) {
         if (numbers.isEmpty()) return;
-        int indexToPull = kth;
-        int reminder = 0;
-        for (int number = total - 1; number > 1; number--) {
-            if (reminder == 0) reminder = indexToPull % number;
-            indexToPull /= number;
-            if (indexToPull == 0) break;
-        }
-
-        String number = numbers.get(indexToPull);
-        numbers.remove(indexToPull);
+        long nextFactorial = factorial / total ;
+        int index = (int) (kth / nextFactorial);
+        int nextK = (int) (kth % nextFactorial);
+        String number = numbers.get(index);
+        numbers.remove(index);
         resultBuilder.append(number);
-        int nextK = reminder;
-        solve(total - 1, nextK, resultBuilder, numbers);
+        solve(total - 1, nextFactorial, nextK, resultBuilder, numbers);
     }
 }
