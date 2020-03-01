@@ -5,29 +5,23 @@ import java.util.*;
 public class Anagrams {
     public ArrayList<ArrayList<Integer>> anagrams(final List<String> anagrams) {
 
-        Map<Integer, Set<Integer>> result = new TreeMap<>();
-        Set<String> characters = new HashSet<>();
-        HashMap<Integer, Integer> indexMap = new HashMap<>();
+        Map<String, ArrayList<Integer>> result = new LinkedHashMap<>();
         for (int index = 0; index < anagrams.size(); index++) {
-            String currentString = anagrams.get(index);
-            String[] chars = currentString.split("");
-            characters.addAll(Arrays.asList(chars));
-            int currentHash = characters.hashCode();
-            characters.clear();
-            if (!indexMap.containsKey(currentHash)) {
-                indexMap.put(currentHash, index);
-                continue;
-            }
-            int matchingIndex = indexMap.get(currentHash);
-            Set<Integer> indexes = result.getOrDefault(currentHash, new TreeSet<>());
+            String currentString = sortString(anagrams.get(index));
+            ArrayList<Integer> indexes = result.getOrDefault(currentString, new ArrayList<>());
             indexes.add(index + 1);
-            indexes.add(matchingIndex + 1);
-            result.put(currentHash, indexes);
+            result.put(currentString, indexes);
         }
         ArrayList<ArrayList<Integer>> answer = new ArrayList<>();
-        for (Set<Integer> set : result.values()) {
+        for (ArrayList<Integer> set : result.values()) {
             answer.add(new ArrayList<>(set));
         }
         return answer;
+    }
+
+    private String sortString(String inputString) {
+        char tempArray[] = inputString.toCharArray();
+        Arrays.sort(tempArray);
+        return new String(tempArray);
     }
 }
