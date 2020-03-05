@@ -7,20 +7,15 @@ public class LongestSubstringWithoutRepeat {
     public int lengthOfLongestSubstring(String string) {
         int length = 0;
         HashSet<Character> characters = new HashSet<>();
+        int start = 0;
         for (int i = 0; i < string.length(); i++) {
-            for (int j = i; j < string.length(); j++) {
-                Character currentCharacter = string.charAt(j);
-                if (characters.contains(currentCharacter)) {
-                    break;
-                } else {
-                    characters.add(currentCharacter);
-                }
-
+            Character currentCharacter = string.charAt(i);
+            while (characters.contains(currentCharacter)) {
+                characters.remove(string.charAt(start));
+                start++;
             }
-            if (characters.size() > length) {
-                length = characters.size();
-            }
-            characters.clear();
+            characters.add(currentCharacter);
+            length = Math.max(length, characters.size());
         }
         return length;
     }
