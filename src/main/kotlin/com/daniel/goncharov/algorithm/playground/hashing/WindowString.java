@@ -1,37 +1,45 @@
 package com.daniel.goncharov.algorithm.playground.hashing;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 public class WindowString {
 
     public String minWindow(String string, String template) {
-        HashSet<Character> templateSet = new HashSet<>();
-        Map<Character, Integer> characters = new HashMap<>();
-        for (int i = 0; i < template.length(); i++) templateSet.add(template.charAt(i));
+        if (template.length() > string.length()) return "";
+        HashMap<Character, Integer> templateMap = new HashMap<>();
+        Map<Character, Integer> charactersMap = new HashMap<>();
+        for (int index = 0; index < template.length(); index++) {
+            Character currentCharacter = template.charAt(index);
+            int count = templateMap.getOrDefault(currentCharacter, 0);
+            count++;
+            templateMap.put(currentCharacter, count);
+        }
         int minStart = 0;
         int minEnd = Integer.MAX_VALUE;
+        int matchedCharacters = 0;
         for (int index = 0, start = 0; index < string.length(); index++) {
             Character currentCharacter = string.charAt(index);
-            if (templateSet.contains(currentCharacter)) {
-                int count = characters.getOrDefault(currentCharacter, 0);
-                count++;
-                characters.put(currentCharacter, count);
+            int count = charactersMap.getOrDefault(currentCharacter, 0);
+            count++;
+            charactersMap.put(currentCharacter, count);
+            if (templateMap.containsKey(currentCharacter)
+                    && charactersMap.get(currentCharacter) <= templateMap.get(currentCharacter)) {
+                matchedCharacters++;
             }
-            if (characters.size() != templateSet.size()) continue;
-            while (characters.size() == templateSet.size()) {
-                int count = characters.getOrDefault(string.charAt(start), 1);
-                count--;
-                if (count == 0) {
-                    characters.remove(string.charAt(start));
-                } else {
-                    characters.put(string.charAt(start), count);
+            if (template.length() != matchedCharacters) continue;
+            while (charactersMap.getOrDefault(string.charAt(start), 0) > templateMap.getOrDefault(string.charAt(start), 0)
+                    || !templateMap.containsKey(string.charAt(start))) {
+                if (charactersMap.getOrDefault(string.charAt(start), 0) > templateMap.getOrDefault(string.charAt(start), 0)) {
+                    int matchCount = charactersMap.getOrDefault(string.charAt(start), 0);
+                    if (matchCount == 0) charactersMap.remove(string.charAt(start));
+                    matchCount--;
+                    charactersMap.put(string.charAt(start), matchCount);
                 }
                 start++;
             }
-            if (index - start - 1 < minEnd - minStart) {
-                minStart = start - 1;
+            if (index - start < minEnd - minStart) {
+                minStart = start;
                 minEnd = index;
             }
 
