@@ -14,15 +14,16 @@ public class NextGreaterNumberBST {
             if (inspectNode.left == null && inspectNode.right == null) {
                 visitedNodes.add(inspectNode);
                 inspectNode = stack.isEmpty() ? null : stack.pop();
+            } else if (inspectNode.left != null && !visitedNodes.contains(inspectNode.left)) {
+                if (inspectNode.right != null) stack.add(inspectNode.right);
+                stack.add(inspectNode);
+                inspectNode = inspectNode.left;
+            } else if (inspectNode.left != null && visitedNodes.contains(inspectNode.left)) {
+                visitedNodes.add(inspectNode);
+                inspectNode = stack.isEmpty() ? null : stack.pop();
             } else if (inspectNode.left == null && inspectNode.right != null) {
                 visitedNodes.add(inspectNode);
                 inspectNode = inspectNode.right;
-            } else if (inspectNode.left != null && visitedNodes.contains(inspectNode.left)) {
-                visitedNodes.add(inspectNode);
-                inspectNode = inspectNode.right;
-            } else if (inspectNode.left != null && !visitedNodes.contains(inspectNode.left)) {
-                stack.add(inspectNode);
-                inspectNode = inspectNode.left;
             }
         }
         for (TreeNode treeNode : visitedNodes) if (treeNode.val > anchor) return treeNode;
