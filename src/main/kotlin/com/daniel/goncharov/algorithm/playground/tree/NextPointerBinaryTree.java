@@ -9,8 +9,10 @@ public class NextPointerBinaryTree {
         Deque<Pair> deque = new LinkedList();
         int level = 0;
         TreeLinkNode currentNode = root;
-        deque.add(new Pair(currentNode.left, level + 1));
-        deque.add(new Pair(currentNode.right, level + 1));
+        if (currentNode.left != null) {// is last level
+            deque.add(new Pair(currentNode.left, level + 1));
+            deque.add(new Pair(currentNode.right, level + 1));
+        }
         while (!deque.isEmpty()) {
             Pair topOfDeque = deque.poll();
             if (topOfDeque.node.left != null) {// is last level
