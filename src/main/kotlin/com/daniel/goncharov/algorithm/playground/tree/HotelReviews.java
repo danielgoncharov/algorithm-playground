@@ -5,31 +5,29 @@ import java.util.*;
 public class HotelReviews {
 
     public ArrayList<Integer> solve(String goodWords, ArrayList<String> reviews) {
-        String[] goodWordsArray = goodWords.split("_");
+        if (goodWords.length() == 0 || reviews.size() == 0) return new ArrayList<>();
         HashSet<String> goodWordsSet = new HashSet<>();
-        for (String goodWord : goodWordsArray) {
-            goodWordsSet.add(goodWord);
-        }
+        for (String goodWord : goodWords.split("_")) goodWordsSet.add(goodWord);
 
-        HashSet<String> reviewWords = new HashSet<>();
-        HashMap<Integer, Integer> sortedOrder = new HashMap<>();
+        TreeMap<Integer, ArrayList<Integer>> map = new TreeMap<>(Collections.reverseOrder());
         for (int index = 0; index < reviews.size(); index++) {
-            String currentReview = reviews.get(index);
-            String[] words = currentReview.split("_");
-            for (String word : words) {
-                if (goodWordsSet.contains(word)) {
-                    reviewWords.add(word);
+            String review = reviews.get(index);
+            int count = 0;
+            for (String reviewWord : review.split("_")) {
+                if (goodWordsSet.contains(reviewWord)) {
+                    count++;
                 }
             }
-            sortedOrder.put(index, reviewWords.size());
-            reviewWords.clear();
+            ArrayList<Integer> indexes = map.getOrDefault(count, new ArrayList<>());
+            indexes.add(index);
+            map.put(count, indexes);
         }
-        ArrayList<Map.Entry<Integer, Integer>> entries = new ArrayList<>(sortedOrder.entrySet());
-        Collections.sort(entries, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
-        ArrayList<Integer> result=new ArrayList<>();
-        for (Map.Entry<Integer, Integer> entry:entries){
-            result.add(entry.getKey());
+
+        ArrayList<Integer> result = new ArrayList<>();
+        for (Map.Entry<Integer, ArrayList<Integer>> entry : map.entrySet()) {
+            result.addAll(entry.getValue());
         }
         return result;
+
     }
 }
