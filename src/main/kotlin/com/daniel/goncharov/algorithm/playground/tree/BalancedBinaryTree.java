@@ -1,38 +1,23 @@
 package com.daniel.goncharov.algorithm.playground.tree;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Stack;
-
 public class BalancedBinaryTree {
 
     public int isBalanced(TreeNode root) {
-        int min = Integer.MAX_VALUE;
-        int max = Integer.MIN_VALUE;
-        Stack<TreeNode> stack = new Stack<>();
-        stack.add(root);
-        int stackHeight = 1;
-        TreeNode currentNode = root;
-        do {
-            if (currentNode.left == null && currentNode.right == null) {
-                currentNode = stack.pop();
-            } else if (currentNode.left == null && currentNode.right != null) {
-                min = Math.min(min, stackHeight);
-                max = Math.max(max, stackHeight);
-                stack.add(currentNode.right);
-            } else if (currentNode.left != null && currentNode.right == null) {
-                min = Math.min(min, stackHeight);
-                max = Math.max(max, stackHeight);
-                stack.add(currentNode.left);
-            } else {
-                stack.add(currentNode.left);
-                stack.add(currentNode.right);
-            }
-        } while (currentNode != null && !stack.isEmpty());
-        return Math.abs(max - min) > 1 ? 0 : 1;
+        return isBalancedTree(root) ? 1 : 0;
     }
 
-    private void fun(ArrayList<Integer> minMax, HashSet<TreeNode> visited, TreeNode treeNode) {
+    private boolean isBalancedTree(TreeNode root) {
+        if (root == null) return true;
+        int leftHeight = calculateHeight(root.left);
+        int rightHeight = calculateHeight(root.right);
+        if (Math.abs(rightHeight - leftHeight) <= 1 && isBalancedTree(root.left) && isBalancedTree(root.right)) {
+            return true;
+        }
+        return false;
+    }
 
+    private int calculateHeight(TreeNode treeNode) {
+        if (treeNode == null) return 0;
+        return Math.max(calculateHeight(treeNode.right), calculateHeight(treeNode.left)) + 1;
     }
 }
