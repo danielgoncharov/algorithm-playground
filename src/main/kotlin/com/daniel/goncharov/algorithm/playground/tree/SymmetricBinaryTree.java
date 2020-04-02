@@ -10,7 +10,7 @@ public class SymmetricBinaryTree {
         Deque<TreeNode> symmetricCheckNodeDeque = new LinkedList<>();
         Deque<TreeNode> layerDeque = new LinkedList<>(Arrays.asList(root));
         int nextSize = 2;
-        while (layerDeque.isEmpty()) {
+        while (!layerDeque.isEmpty()) {
             if (layerDeque.size() == nextSize) {
                 while (!symmetricCheckNodeDeque.isEmpty()) {
                     TreeNode leftCorner = symmetricCheckNodeDeque.removeFirst();
