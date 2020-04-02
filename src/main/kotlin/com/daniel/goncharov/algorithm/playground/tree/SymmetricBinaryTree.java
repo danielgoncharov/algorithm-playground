@@ -16,15 +16,17 @@ public class SymmetricBinaryTree {
                     TreeNode leftCorner = symmetricCheckNodeDeque.removeFirst();
                     TreeNode rightCorner = symmetricCheckNodeDeque.removeLast();
                     if (leftCorner == null && rightCorner == null) continue;
-                    if (leftCorner == null || rightCorner == null) return 0;
-                    if (leftCorner.val != rightCorner.val) return 0;
+                    if (leftCorner == null || rightCorner == null) throw new RuntimeException("one of them null");
+                    if (leftCorner.val != rightCorner.val)
+                        throw new RuntimeException("vals: " + leftCorner.val + " " + rightCorner.val);
                 }
                 nextSize *= 2;
             }
             TreeNode currentTreeNode = layerDeque.poll();
+            if (currentTreeNode == null) continue;
             layerDeque.add(currentTreeNode.left);
             layerDeque.add(currentTreeNode.right);
-            symmetricCheckNodeDeque.push(currentTreeNode.left);
+            symmetricCheckNodeDeque.add(currentTreeNode.left);
             symmetricCheckNodeDeque.add(currentTreeNode.right);
         }
         return 1;
