@@ -27,7 +27,7 @@ public class BinaryTreeFromInorderAndPostorder {
 
         Integer rootVal = postOrder.get(rightPostOrder);
         TreeNode root = new TreeNode(rootVal);
-        int rootIndexInOrder = inOrder.indexOf(rootVal);
+        int rootIndexInOrder = findIndex(inOrder, rootVal, leftInOrder, rightInOrder);
 
         int itemsToLeftInOrder = rootIndexInOrder - 1 - leftInOrder;
         root.left = buildTree(
@@ -54,5 +54,17 @@ public class BinaryTreeFromInorderAndPostorder {
 
         return root;
 
+    }
+
+    private int findIndex(
+            ArrayList<Integer> inOrder,
+            Integer rootVal,
+            int leftInOrder,
+            int rightInOrder) {
+        for (int index = leftInOrder; index <= rightInOrder; index++) {
+            Integer current = inOrder.get(index);
+            if (current.equals(rootVal)) return index;
+        }
+        throw new IndexOutOfBoundsException("Failed to find value " + rootVal + "in range " + leftInOrder + " - " + rightInOrder);
     }
 }
