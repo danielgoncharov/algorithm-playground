@@ -1,7 +1,6 @@
 package com.daniel.goncharov.algorithm.playground.tree;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Stack;
 
 public class RecoverBinarySearchTree {
@@ -27,9 +26,8 @@ public class RecoverBinarySearchTree {
             currentElement = currentElement.right;
         }
         if (result.size() < 2 && adjusent != null) {
-            result.add(adjusent.val);
+            result.add(0, adjusent.val);
         }
-        Collections.sort(result);
         return result;
     }
 
