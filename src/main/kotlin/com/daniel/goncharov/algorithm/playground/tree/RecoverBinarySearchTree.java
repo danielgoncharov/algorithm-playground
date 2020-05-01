@@ -9,8 +9,9 @@ public class RecoverBinarySearchTree {
         TreeNode currentElement = root;
         Stack<TreeNode> stack = new Stack<>();
         ArrayList<Integer> result = new ArrayList<>();
-        int previousValue = Integer.MIN_VALUE;
-        TreeNode adjusent = null;
+        TreeNode previous = null;
+        int left = Integer.MAX_VALUE;
+        int right = Integer.MIN_VALUE;
         while (!stack.isEmpty() || currentElement != null || result.size() == 2) {
             while (currentElement != null) {
                 stack.add(currentElement);
@@ -18,16 +19,15 @@ public class RecoverBinarySearchTree {
             }
             if (stack.isEmpty()) break;
             currentElement = stack.pop();
-            if (previousValue > currentElement.val) {
-                result.add(previousValue);
-                adjusent = currentElement;
+            if (previous != null && previous.val > currentElement.val) {
+                left = Math.min(left, Math.min(currentElement.val, previous.val));
+                right = Math.max(right, Math.max(currentElement.val, previous.val));
             }
-            previousValue = currentElement.val;
+            previous = currentElement;
             currentElement = currentElement.right;
         }
-        if (result.size() < 2 && adjusent != null) {
-            result.add(0, adjusent.val);
-        }
+        result.add(left);
+        result.add(right);
         return result;
     }
 
