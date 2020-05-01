@@ -12,7 +12,7 @@ public class RecoverBinarySearchTree {
         TreeNode previous = null;
         int left = Integer.MAX_VALUE;
         int right = Integer.MIN_VALUE;
-        while (!stack.isEmpty() || currentElement != null || result.size() == 2) {
+        while (!stack.isEmpty() || currentElement != null) {
             while (currentElement != null) {
                 stack.add(currentElement);
                 currentElement = currentElement.left;
