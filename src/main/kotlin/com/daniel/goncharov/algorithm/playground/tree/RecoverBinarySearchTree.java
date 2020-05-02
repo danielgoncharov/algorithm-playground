@@ -8,7 +8,6 @@ public class RecoverBinarySearchTree {
     public ArrayList<Integer> recoverTree(TreeNode root) {
         TreeNode currentElement = root;
         Stack<TreeNode> stack = new Stack<>();
-        ArrayList<Integer> result = new ArrayList<>();
         TreeNode previous = null;
         int left = Integer.MAX_VALUE;
         int right = Integer.MIN_VALUE;
@@ -26,6 +25,7 @@ public class RecoverBinarySearchTree {
             previous = currentElement;
             currentElement = currentElement.right;
         }
+        ArrayList<Integer> result = new ArrayList<>();
         result.add(left);
         result.add(right);
         return result;
