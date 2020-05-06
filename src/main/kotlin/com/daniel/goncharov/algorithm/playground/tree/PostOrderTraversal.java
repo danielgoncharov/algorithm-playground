@@ -11,15 +11,18 @@ public class PostOrderTraversal {
         TreeNode currentNode = root;
         while (!stack.isEmpty() || currentNode != null) {
             while (currentNode != null) {
+                if (currentNode.right != null) stack.push(currentNode.right);
                 stack.push(currentNode);
                 currentNode = currentNode.left;
             }
             currentNode = stack.pop();
-            result.add(currentNode.val);
-            if (stack.isEmpty() || stack.peek().right == null || stack.peek().right.val == currentNode.val) {
-                currentNode = null;
+            if (!stack.isEmpty() && currentNode.right == stack.peek()) {
+                TreeNode right = stack.pop();
+                stack.push(currentNode);
+                currentNode = right;
             } else {
-                currentNode = stack.peek().right;
+                result.add(currentNode.val);
+                currentNode = null;
             }
         }
         return result;
