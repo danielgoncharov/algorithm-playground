@@ -11,8 +11,9 @@ public class FlattenBinaryTreeToLinkedList {
             TreeNode current = list.get(index);
             current.left = null;
             TreeNode next = null;
-            if (index + 1 < list.size()) {
-                next = list.get(index);
+            int nextIndex = index + 1;
+            if (nextIndex < list.size()) {
+                next = list.get(nextIndex);
             }
             current.right = next;
         }
