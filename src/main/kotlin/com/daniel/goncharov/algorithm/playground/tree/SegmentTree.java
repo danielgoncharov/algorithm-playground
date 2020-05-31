@@ -1,36 +1,47 @@
 package com.daniel.goncharov.algorithm.playground.tree;
 
-class SegmentTree {
-    int treeArray[];
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiFunction;
 
-    SegmentTree(int array[]) {
-        int arrayLength = array.length;
-        int closetPowerOfTwo = (int) (Math.ceil(Math.log(arrayLength) / Math.log(2)));
+class SegmentTree<T> {
+    private final int originalItemsSize;
+    private List<T> treeStorage;
+    private BiFunction<T, T, T> function;
+
+    private SegmentTree(List<T> items, BiFunction<T, T, T> function) {
+        this.originalItemsSize = items.size();
+        this.function = function;
+        int length = items.size();
+        int closetPowerOfTwo = (int) (Math.ceil(Math.log(length) / Math.log(2)));//TODO clear the logic
         int maxSize = 2 * (int) Math.pow(2, closetPowerOfTwo) - 1;
-        treeArray = new int[maxSize];
-        constructSTUtil(array, 0, arrayLength - 1, 0);
+        treeStorage = new ArrayList<>(maxSize);
+        constructSegmentTree(items, 0, length - 1, 0);
     }
 
     // A recursive function that constructs Segment Tree for array[ss..se].
     // si is index of current node in segment tree st
-    private int constructSTUtil(int array[], int ss, int se, int si) {
+    private T constructSegmentTree(List<T> items, int ss, int se, int si) {
         // If there is one element in array, store it in current node of
         // segment tree and return
         if (ss == se) {
-            treeArray[si] = array[ss];
-            return array[ss];
+            treeStorage.set(si, items.get(ss));
+            return items.get(ss);
         }
 
         // If there are more than one elements, then recur for left and
         // right subtrees and store the sum of values in this node
         int mid = getMid(ss, se);
-        treeArray[si] = constructSTUtil(array, ss, mid, si * 2 + 1) +
-                constructSTUtil(array, mid + 1, se, si * 2 + 2);
-        return treeArray[si];
+        T result = function.apply(
+                constructSegmentTree(items, ss, mid, si * 2 + 1),
+                constructSegmentTree(items, mid + 1, se, si * 2 + 2)
+        );
+        treeStorage.set(si, result);
+        return treeStorage.get(si);
     }
 
     // A utility function to get the middle index from corner indexes.
-    int getMid(int s, int e) {
+    private int getMid(int s, int e) {
         return s + (e - s) / 2;
     }
 
@@ -43,11 +54,11 @@ class SegmentTree {
     ss & se --> Starting and ending indexes of the segment represented
                     by current node, i.e., st[si]
     qs & qe --> Starting and ending indexes of query range */
-    private int getSumUtil(int ss, int se, int qs, int qe, int si) {
+    private T query(int ss, int se, int qs, int qe, int si) {
         // If segment of this node is a part of given range, then return
         // the sum of the segment
         if (qs <= ss && qe >= se)
-            return treeArray[si];
+            return treeStorage.get(si);
 
         // If segment of this node is outside the given range
         if (se < qs || ss > qe)
@@ -55,8 +66,10 @@ class SegmentTree {
 
         // If a part of this segment overlaps with the given range
         int mid = getMid(ss, se);
-        return getSumUtil(ss, mid, qs, qe, 2 * si + 1) +
-                getSumUtil(mid + 1, se, qs, qe, 2 * si + 2);
+        return function.apply(
+                query(ss, mid, qs, qe, 2 * si + 1),
+                query(mid + 1, se, qs, qe, 2 * si + 2)
+        );
     }
 
     /* A recursive function to update the nodes which have the given
@@ -100,14 +113,13 @@ class SegmentTree {
         updateValueUtil(0, n - 1, i, diff, 0);
     }
 
-    // Return sum of elements in range from index qs (quey start) to
-// qe (query end). It mainly uses getSumUtil()
-    int getSum(int n, int qs, int qe) {
-        // Check for erroneous input values
-        if (qs < 0 || qe > n - 1 || qs > qe) {
-            System.out.println("Invalid Input");
-            return -1;
+
+    T query(int start, int end) {
+        if (start < 0 || end > originalItemsSize - 1 || start > end) {
+            throw new IllegalArgumentException("The query range is outside of bounds");
         }
-        return getSumUtil(0, n - 1, qs, qe, 0);
+        return query(0, originalItemsSize - 1, start, end, 0);
     }
+
+
 }

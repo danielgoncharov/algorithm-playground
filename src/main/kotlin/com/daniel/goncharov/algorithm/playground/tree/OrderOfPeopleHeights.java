@@ -10,7 +10,7 @@ public class OrderOfPeopleHeights {
         SegmentTree segmentTree = new SegmentTree(new int[heights.size()]);
         ArrayList<Item> items = createSortedItemsList(heights, inFronts);
         for (int index = 0; index < items.size(); index++) {
-            segmentTree.getSum()
+            segmentTree.query()
         }
     }
 
