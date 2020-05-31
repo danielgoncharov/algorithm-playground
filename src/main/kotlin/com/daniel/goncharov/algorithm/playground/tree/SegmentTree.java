@@ -5,16 +5,19 @@ import java.util.List;
 
 class SegmentTree<T> {
     private final int originalItemsSize;
+    private final List<T> items;
     private List<T> treeStorage;
     private AssociativeFunction<T> function;
 
     private SegmentTree(List<T> items, AssociativeFunction<T> function) {
-        this.originalItemsSize = items.size();
+        this.items = items;
+        originalItemsSize = items.size();
         this.function = function;
         int length = items.size();
         int closetPowerOfTwo = (int) (Math.ceil(Math.log(length) / Math.log(2)));//TODO clear the logic
         int maxSize = 2 * (int) Math.pow(2, closetPowerOfTwo) - 1;
         treeStorage = new ArrayList<>(maxSize);
+        for (int index = 0; index < maxSize; index++) treeStorage.set(index, function.baseValue());
         constructSegmentTree(items, 0, length - 1, 0);
     }
 
@@ -71,24 +74,25 @@ class SegmentTree<T> {
         i --> index of the element to be updated. This index is in
                 input array.
     diff --> Value to be added to all nodes which have i in range */
-    private void updateValue(int startSegment, int endSegment, int index, int diff, int currentNodeIndex) {
-        if (index < startSegment || index > endSegment) return;
-        // If the input index is in range of this node, then update the
-        // value of the node and its children
-        treeArray[currentNodeIndex] = treeArray[currentNodeIndex] + diff;
-        if (endSegment != startSegment) {
-            int middleIndex = middleIndex(startSegment, endSegment);
-            updateValue(startSegment, middleIndex, index, diff, leftNodeIndex(currentNodeIndex));
-            updateValue(middleIndex + 1, endSegment, index, diff, rightNodeIndex(currentNodeIndex));
+    private T updateValue(int startSegment, int endSegment, int index, T newValue, int currentNodeIndex) {
+        if (index < startSegment || index > endSegment) return function.baseValue();
+        if (endSegment == startSegment) {
+            treeStorage.set(currentNodeIndex, newValue);
+            return newValue;
         }
+
+        int middleIndex = middleIndex(startSegment, endSegment);
+        T left = updateValue(startSegment, middleIndex, index, newValue, leftNodeIndex(currentNodeIndex));
+        T right = updateValue(middleIndex + 1, endSegment, index, newValue, rightNodeIndex(currentNodeIndex));
+        T newIntermediateNode = function.apply(left, right);
+        treeStorage.set(currentNodeIndex, newIntermediateNode);
+        return newIntermediateNode;
     }
 
     void updateValue(int index, T newValue) {
         validateIndex(index);
 
-        int diff = newValue - arr[index];
-
-        updateValue(0, originalItemsSize - 1, index, diff, 0);
+        updateValue(0, originalItemsSize - 1, index, newValue, 0);
     }
 
 
