@@ -28,17 +28,25 @@ class SegmentTree<T> {
 
         // If there are more than one elements, then recur for left and
         // right subtrees and store the sum of values in this node
-        int mid = getMiddleIndex(startSegment, endSegment);
+        int middleIndex = middleIndex(startSegment, endSegment);
         T result = function.apply(
-                constructSegmentTree(items, startSegment, mid, nodeIndex * 2 + 1),
-                constructSegmentTree(items, mid + 1, endSegment, nodeIndex * 2 + 2)
+                constructSegmentTree(items, startSegment, middleIndex, leftNodeIndex(nodeIndex)),
+                constructSegmentTree(items, middleIndex + 1, endSegment, rightNodeIndex(nodeIndex))
         );
         treeStorage.set(nodeIndex, result);
         return treeStorage.get(nodeIndex);
     }
 
-    private int getMiddleIndex(int leftIndex, int rightIndex) {
+    private int middleIndex(int leftIndex, int rightIndex) {
         return leftIndex + (rightIndex - leftIndex) / 2;
+    }
+
+    private int leftNodeIndex(int index) {
+        return index * 2 + 1;
+    }
+
+    private int rightNodeIndex(int index) {
+        return index * 2 + 2;
     }
 
     private T query(int startSegment, int endSegment, int queryStart, int queryEnd, int currentNodeIndex) {
@@ -50,10 +58,10 @@ class SegmentTree<T> {
         if (endSegment < queryStart || startSegment > queryEnd) return function.baseValue();
 
         // If a part of this segment overlaps with the given range
-        int mid = getMiddleIndex(startSegment, endSegment);
+        int mid = middleIndex(startSegment, endSegment);
         return function.apply(
-                query(startSegment, mid, queryStart, queryEnd, 2 * currentNodeIndex + 1),
-                query(mid + 1, endSegment, queryStart, queryEnd, 2 * currentNodeIndex + 2)
+                query(startSegment, mid, queryStart, queryEnd, leftNodeIndex(currentNodeIndex)),
+                query(mid + 1, endSegment, queryStart, queryEnd, rightNodeIndex(currentNodeIndex))
         );
     }
 
@@ -63,15 +71,15 @@ class SegmentTree<T> {
         i --> index of the element to be updated. This index is in
                 input array.
     diff --> Value to be added to all nodes which have i in range */
-    private void updateValue(int startSegment, int endSegment, int index, int diff, int si) {
+    private void updateValue(int startSegment, int endSegment, int index, int diff, int currentNodeIndex) {
         if (index < startSegment || index > endSegment) return;
         // If the input index is in range of this node, then update the
         // value of the node and its children
-        treeArray[si] = treeArray[si] + diff;
+        treeArray[currentNodeIndex] = treeArray[currentNodeIndex] + diff;
         if (endSegment != startSegment) {
-            int mid = getMiddleIndex(startSegment, endSegment);
-            updateValue(startSegment, mid, index, diff, 2 * si + 1);
-            updateValue(mid + 1, endSegment, index, diff, 2 * si + 2);
+            int middleIndex = middleIndex(startSegment, endSegment);
+            updateValue(startSegment, middleIndex, index, diff, leftNodeIndex(currentNodeIndex));
+            updateValue(middleIndex + 1, endSegment, index, diff, rightNodeIndex(currentNodeIndex));
         }
     }
 
