@@ -5,12 +5,10 @@ import java.util.List;
 
 class SegmentTree<T> {
     private final int originalItemsSize;
-    private final List<T> items;
     private List<T> treeStorage;
     private AssociativeFunction<T> function;
 
-    private SegmentTree(List<T> items, AssociativeFunction<T> function) {
-        this.items = items;
+    SegmentTree(List<T> items, AssociativeFunction<T> function) {
         originalItemsSize = items.size();
         this.function = function;
         int length = items.size();
@@ -19,6 +17,20 @@ class SegmentTree<T> {
         treeStorage = new ArrayList<>(maxSize);
         for (int index = 0; index < maxSize; index++) treeStorage.set(index, function.baseValue());
         constructSegmentTree(items, 0, length - 1, 0);
+    }
+
+    void updateValue(int index, T newValue) {
+        validateIndex(index);
+
+        updateValue(0, originalItemsSize - 1, index, newValue, 0);
+    }
+
+
+    T query(int start, int end) {
+        validateIndex(start);
+        validateIndex(end);
+        if (start > end) throw new IllegalArgumentException("Start is more the end");
+        return query(0, originalItemsSize - 1, start, end, 0);
     }
 
     private T constructSegmentTree(List<T> items, int startSegment, int endSegment, int nodeIndex) {
@@ -68,12 +80,6 @@ class SegmentTree<T> {
         );
     }
 
-    /* A recursive function to update the nodes which have the given
-    index in their range. The following are parameters
-        st, si, ss and se are same as getSumUtil()
-        i --> index of the element to be updated. This index is in
-                input array.
-    diff --> Value to be added to all nodes which have i in range */
     private T updateValue(int startSegment, int endSegment, int index, T newValue, int currentNodeIndex) {
         if (index < startSegment || index > endSegment) return function.baseValue();
         if (endSegment == startSegment) {
@@ -87,20 +93,6 @@ class SegmentTree<T> {
         T newIntermediateNode = function.apply(left, right);
         treeStorage.set(currentNodeIndex, newIntermediateNode);
         return newIntermediateNode;
-    }
-
-    void updateValue(int index, T newValue) {
-        validateIndex(index);
-
-        updateValue(0, originalItemsSize - 1, index, newValue, 0);
-    }
-
-
-    T query(int start, int end) {
-        validateIndex(start);
-        validateIndex(end);
-        if (start > end) throw new IllegalArgumentException("Start is more the end");
-        return query(0, originalItemsSize - 1, start, end, 0);
     }
 
     private void validateIndex(int index) {
