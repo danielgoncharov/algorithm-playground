@@ -45,30 +45,27 @@ class SegmentTree<T> {
         return s + (e - s) / 2;
     }
 
-    /* A recursive function to get the sum of values in given range
+    /* A recursive function to get the query of values in given range
         of the array. The following are parameters for this function.
 
-    st --> Pointer to segment tree
     si --> Index of current node in the segment tree. Initially
                 0 is passed as root is always at index 0
     ss & se --> Starting and ending indexes of the segment represented
                     by current node, i.e., st[si]
     qs & qe --> Starting and ending indexes of query range */
-    private T query(int ss, int se, int qs, int qe, int si) {
+    private T query(int ss, int se, int queryStart, int queryEnd, int currentNodeIndex) {
         // If segment of this node is a part of given range, then return
         // the sum of the segment
-        if (qs <= ss && qe >= se)
-            return treeStorage.get(si);
+        if (queryStart <= ss && queryEnd >= se) return treeStorage.get(currentNodeIndex);
 
         // If segment of this node is outside the given range
-        if (se < qs || ss > qe)
-            return 0;
+        if (se < queryStart || ss > queryEnd) return 0;
 
         // If a part of this segment overlaps with the given range
         int mid = getMid(ss, se);
         return function.apply(
-                query(ss, mid, qs, qe, 2 * si + 1),
-                query(mid + 1, se, qs, qe, 2 * si + 2)
+                query(ss, mid, queryStart, queryEnd, 2 * currentNodeIndex + 1),
+                query(mid + 1, se, queryStart, queryEnd, 2 * currentNodeIndex + 2)
         );
     }
 
@@ -78,10 +75,10 @@ class SegmentTree<T> {
         i --> index of the element to be updated. This index is in
                 input array.
     diff --> Value to be added to all nodes which have i in range */
-    private void updateValueUtil(int ss, int se, int i, int diff, int si) {
+    private void updateValueUtil(int ss, int se, int index, int diff, int si) {
         // Base Case: If the input index lies outside the range of
         // this segment
-        if (i < ss || i > se)
+        if (index < ss || index > se)
             return;
 
         // If the input index is in range of this node, then update the
@@ -89,37 +86,28 @@ class SegmentTree<T> {
         treeArray[si] = treeArray[si] + diff;
         if (se != ss) {
             int mid = getMid(ss, se);
-            updateValueUtil(ss, mid, i, diff, 2 * si + 1);
-            updateValueUtil(mid + 1, se, i, diff, 2 * si + 2);
+            updateValueUtil(ss, mid, index, diff, 2 * si + 1);
+            updateValueUtil(mid + 1, se, index, diff, 2 * si + 2);
         }
     }
 
-    // The function to update a value in input array and segment tree.
-// It uses updateValueUtil() to update the value in segment tree
-    void updateValue(int arr[], int n, int i, int new_val) {
-        // Check for erroneous input index
-        if (i < 0 || i > n - 1) {
-            System.out.println("Invalid Input");
-            return;
-        }
+    void updateValue(int index, T newValue) {
+        validateIndex(index);
 
-        // Get the difference between new value and old value
-        int diff = new_val - arr[i];
+        int diff = newValue - arr[index];
 
-        // Update the value in array
-        arr[i] = new_val;
-
-        // Update the values of nodes in segment tree
-        updateValueUtil(0, n - 1, i, diff, 0);
+        updateValueUtil(0, originalItemsSize - 1, index, diff, 0);
     }
 
 
     T query(int start, int end) {
-        if (start < 0 || end > originalItemsSize - 1 || start > end) {
-            throw new IllegalArgumentException("The query range is outside of bounds");
-        }
+        validateIndex(start);
+        validateIndex(end);
+        if (start > end) throw new IllegalArgumentException("Start is more the end");
         return query(0, originalItemsSize - 1, start, end, 0);
     }
 
-
+    private void validateIndex(int index) {
+        if (index < 0 || index > originalItemsSize - 1) throw new IllegalArgumentException("Invalid index");
+    }
 }
