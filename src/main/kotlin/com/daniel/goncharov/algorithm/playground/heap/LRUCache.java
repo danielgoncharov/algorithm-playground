@@ -21,6 +21,7 @@ public class LRUCache {
     public void set(int key, int value) {
         if (nodeHashMap.containsKey(key)) {
             Node node = nodeHashMap.get(key);
+            node.value = value;
             addToTop(node);
             return;
         }
@@ -86,7 +87,7 @@ public class LRUCache {
     }
 
     private static class Node {
-        final int value;
+        int value;
         final int key;
         Node previous;
         Node next;
