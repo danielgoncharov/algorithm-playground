@@ -9,8 +9,8 @@ public class LRUCache {
     private final HashMap<Integer, Node> nodeHashMap;
 
     private int currentSize;
-    private Node head;//todo assignment
-    private Node tail;//todo assignment
+    private Node head;
+    private Node tail;
 
     public LRUCache(int capacity) {
         this.capacity = capacity;
@@ -25,8 +25,9 @@ public class LRUCache {
             return;
         }
 
-        Node node = new Node(value);
+        Node node = new Node(key, value);
         if (currentSize == capacity) {
+            if (tail != null) nodeHashMap.remove(tail.key);
             removeLast();
         } else {
             currentSize++;
@@ -69,6 +70,9 @@ public class LRUCache {
         if (previous != null) {
             previous.next = next;
         }
+        if (next != null) {
+            next.previous = previous;
+        }
 
         if (node == tail && previous != null) {
             tail = previous;
@@ -77,15 +81,18 @@ public class LRUCache {
         //add to top of the chain
         node.previous = null;
         node.next = head;
+        head.previous = node;
         head = node;
     }
 
     private static class Node {
         final int value;
+        final int key;
         Node previous;
         Node next;
 
-        public Node(int value) {
+        public Node(int key, int value) {
+            this.key = key;
             this.value = value;
         }
 
