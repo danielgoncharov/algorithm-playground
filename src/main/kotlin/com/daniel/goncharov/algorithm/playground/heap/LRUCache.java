@@ -46,13 +46,22 @@ public class LRUCache {
 
     private void removeLast() {
         Node previous = tail.previous;
-        if (previous != null) {
+        if (capacity == 1) {
+            tail = null;
+            head = null;
+            return;
+        } else if (previous != null) {
             previous.next = null;
             tail = previous;
         }
     }
 
     private void addToTop(Node node) {
+        if (head == null && tail == null) {//very first item
+            head = node;
+            tail = node;
+            return;
+        }
         if (node == head) return; // already on top
         //remove from chain
         Node previous = node.previous;
@@ -60,6 +69,11 @@ public class LRUCache {
         if (previous != null) {
             previous.next = next;
         }
+
+        if (node == tail && previous != null) {
+            tail = previous;
+        }
+
         //add to top of the chain
         node.previous = null;
         node.next = head;
