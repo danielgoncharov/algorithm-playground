@@ -51,8 +51,8 @@ public class LargestAreaOfRectangleWithPermutations {
 
     private void convertToConsequentMatrix(ArrayList<ArrayList<Integer>> matrix) {
         int prev = 0;
-        for (int i = 0; i < matrix.size(); i++) {
-            for (int j = 0; j < matrix.get(0).size(); j++) {
+        for (int i = 0; i <  matrix.get(0).size(); i++) {
+            for (int j = 0; j <matrix.size(); j++) {
                 int value = matrix.get(j).get(i);
                 if (value == 1) {
                     prev++;
