@@ -18,28 +18,29 @@ public class LargestAreaOfRectangleWithPermutations {
 
     private int calculateBiggestHistogram(ArrayList<Integer> arrayList) {
         int max = Integer.MIN_VALUE;
-        Stack<Integer> stackPosition = new Stack<>();
-        Stack<Integer> stackHeights = new Stack<>();
+        Stack<Integer> stack = new Stack<>();
         int index;
-        for (index = 0; index < arrayList.size(); index++) {
-            int currentElement = arrayList.get(index);
-            if (stackPosition.isEmpty() || currentElement > stackPosition.peek()) {
-                stackPosition.add(index);
-                stackHeights.add(currentElement);
-                continue;
+        for (index = 0; index < arrayList.size(); ) {
+            if (stack.isEmpty() || arrayList.get(index) >= arrayList.get(stack.peek())) {
+                index++;
+                stack.add(index);
+            } else {
+                max = getMax(max, stack, index);
             }
-
-            while ( <currentElement){
-                int topOfTheStack = stackPosition.pop();
-                if (stackPosition.isEmpty()) {
-                    max = Math.max(max, topOfTheStack * index);
-                } else {
-                    max = Math.max(max, topOfTheStack * (index - stackPosition.peek() - 1);
-                }
-            }
-            stackPosition.add(currentElement);
+        }
+        while (!stack.isEmpty()) {
+            max = getMax(max, stack, index);
         }
         return max;
+    }
+
+    private int getMax(int max, Stack<Integer> stack, int index) {
+        int topOfTheStack = stack.pop();
+        if (stack.isEmpty()) {
+            return Math.max(max, topOfTheStack * index);
+        } else {
+            return Math.max(max, topOfTheStack * (index - stack.peek() - 1));
+        }
     }
 
     private void sort(ArrayList<ArrayList<Integer>> matrix) {
