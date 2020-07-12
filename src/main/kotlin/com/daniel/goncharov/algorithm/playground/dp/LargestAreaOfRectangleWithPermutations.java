@@ -45,14 +45,16 @@ public class LargestAreaOfRectangleWithPermutations {
 
     private void sort(ArrayList<ArrayList<Integer>> matrix) {
         for (int i = 0; i < matrix.size(); i++) {
-            Collections.reverse(matrix.get(i));
+            ArrayList<Integer> integers = matrix.get(i);
+            Collections.sort(integers, Collections.reverseOrder());
+            matrix.set(i, integers);
         }
     }
 
     private void convertToConsequentMatrix(ArrayList<ArrayList<Integer>> matrix) {
-        int prev = 0;
-        for (int i = 0; i <  matrix.get(0).size(); i++) {
-            for (int j = 0; j <matrix.size(); j++) {
+        for (int i = 0; i < matrix.get(0).size(); i++) {
+            int prev = 0;
+            for (int j = 0; j < matrix.size(); j++) {
                 int value = matrix.get(j).get(i);
                 if (value == 1) {
                     prev++;
