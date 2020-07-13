@@ -22,24 +22,24 @@ public class LargestAreaOfRectangleWithPermutations {
         int index;
         for (index = 0; index < arrayList.size(); ) {
             if (stack.isEmpty() || arrayList.get(index) >= arrayList.get(stack.peek())) {
-                index++;
                 stack.add(index);
+                index++;
             } else {
-                max = getMax(max, stack, index);
+                max = getMax(max, stack, index, arrayList);
             }
         }
         while (!stack.isEmpty()) {
-            max = getMax(max, stack, index);
+            max = getMax(max, stack, index, arrayList);
         }
         return max;
     }
 
-    private int getMax(int max, Stack<Integer> stack, int index) {
+    private int getMax(int max, Stack<Integer> stack, int index, ArrayList<Integer> arrayList) {
         int topOfTheStack = stack.pop();
         if (stack.isEmpty()) {
-            return Math.max(max, topOfTheStack * index);
+            return Math.max(max, arrayList.get(topOfTheStack) * index);
         } else {
-            return Math.max(max, topOfTheStack * (index - stack.peek() - 1));
+            return Math.max(max, arrayList.get(topOfTheStack) * (index - stack.peek() - 1));
         }
     }
 
