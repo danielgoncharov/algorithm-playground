@@ -2,37 +2,25 @@ package com.daniel.goncharov.algorithm.playground.dp;
 
 public class RegularExpressionMatch {
 
-    public int isMatch(final String A, final String B) {
-        return isMatchRecursive(A, trim(B)) ? 1 : 0;
-    }
-
-    private String trim(String B) {
-        StringBuilder stringBuilder = new StringBuilder();
-        Character previousCharacter = null;
-        for (Character character : B.toCharArray()) {
-            if (previousCharacter == null || character.charValue() != previousCharacter.charValue() || previousCharacter.charValue() != '*') {
-                stringBuilder.append(character);
+    public int isMatch(final String string, final String pattern) {
+        boolean[][] table = new boolean[pattern.length() + 1][string.length() + 1];
+        for (int i = 0; i < table.length; i++) {
+            for (int j = 0; j < table[i].length; j++) {
+                if (i == j && i == 0) {
+                    table[i][j] = true;
+                } else if (i == 0) {
+                    table[i][j] = false;
+                } else if (j == 0) {
+                    table[i][j] = pattern.charAt(i - 1) == '*' && table[i - 1][j];
+                } else if (pattern.charAt(i - 1) == string.charAt(j - 1) || pattern.charAt(i - 1) == '?') {
+                    table[i][j] = table[i - 1][j - 1];
+                } else if (pattern.charAt(i - 1) == '*') {
+                    table[i][j] = table[i][j - 1] || table[i - 1][j];
+                } else {
+                    table[i][j] = false;
+                }
             }
-            previousCharacter = character;
         }
-        return stringBuilder.toString();
+        return table[pattern.length()][string.length()] ? 1 : 0;
     }
-
-    private boolean isMatchRecursive(final String A, final String B) {
-        if (A.isEmpty() && B.length() > 1) return false;
-
-        if (
-                (A.isEmpty() && B.isEmpty()) ||
-                        (A.isEmpty() && B.length() == 1 && B.charAt(0) == '*')
-        ) return true;
-
-        if (A.charAt(0) == B.charAt(0) || B.charAt(0) == '?') {
-            return isMatchRecursive(A.substring(1), B.substring(1));
-        } else if (B.charAt(0) == '*') {
-            return isMatchRecursive(A.substring(1), B) || isMatchRecursive(A.substring(1), B.substring(1));
-        } else {
-            return false;
-        }
-    }
-    //todo trim consecutive **
 }
