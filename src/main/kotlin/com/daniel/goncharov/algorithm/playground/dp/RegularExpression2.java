@@ -13,7 +13,7 @@ public class RegularExpression2 {
 
         if (string.charAt(0) == pattern.charAt(0) || pattern.charAt(0) == '.') {
             if (pattern.length() >= 2 && pattern.charAt(1) == '*') {
-                return isMatchRec(string.substring(1), pattern);
+                return isMatchRec(string.substring(1), pattern) || isMatchRec(string, pattern.substring(2));
             } else {
                 return isMatchRec(string.substring(1), pattern.substring(1));
             }
