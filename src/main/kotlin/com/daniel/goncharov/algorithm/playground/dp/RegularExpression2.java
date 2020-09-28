@@ -3,24 +3,32 @@ package com.daniel.goncharov.algorithm.playground.dp;
 public class RegularExpression2 {
 
     public int isMatch(final String string, final String pattern) {
-        return isMatchRec(string, pattern) ? 1 : 0;
-    }
-
-    private boolean isMatchRec(final String string, final String pattern) {
-        if (string.isEmpty() && pattern.isEmpty()) return true;
-        if (string.isEmpty() && pattern.length() == 2 && pattern.charAt(1) == '*') return true;
-        if (!string.isEmpty() && pattern.isEmpty()) return false;
-
-        if (string.charAt(0) == pattern.charAt(0) || pattern.charAt(0) == '.') {
-            if (pattern.length() >= 2 && pattern.charAt(1) == '*') {
-                return isMatchRec(string.substring(1), pattern) || isMatchRec(string, pattern.substring(2));
-            } else {
-                return isMatchRec(string.substring(1), pattern.substring(1));
+        boolean[][] table = new boolean[pattern.length() + 1][string.length() + 1];
+        for (int i = 0; i < table.length; i++) {
+            for (int j = 0; j < table[i].length; j++) {
+                if (i == j && i == 0) {
+                    table[i][j] = true;
+                } else if (i == 0) {
+                    table[i][j] = false;
+                } else if (j == 0) {
+                    if (pattern.charAt(i - 1) == '*') {
+                        table[i][j] = table[i - 1][j];
+                    } else if (i == table.length - 1) {
+                        table[i][j] = false;
+                    } else {
+                        table[i][j] = pattern.charAt(i) == '*' && table[i - 1][j];
+                    }
+                } else if (pattern.charAt(i - 1) == '*') {
+                    table[i][j] = table[i - 1][j];
+                } else if (i == table.length - 1) {
+                    table[i][j] = (pattern.charAt(i - 1) == string.charAt(j - 1) || pattern.charAt(i - 1) == '.') && table[i - 1][j - 1];
+                } else if (pattern.charAt(i - 1) == string.charAt(j - 1) || pattern.charAt(i - 1) == '.') {
+                    table[i][j] = pattern.charAt(i) == '*' ? table[i - 1][j] || table[i][j - 1] : table[i - 1][j - 1];
+                } else {
+                    table[i][j] = pattern.charAt(i) == '*' && table[i - 1][j];
+                }
             }
-        } else if (pattern.length() > 2 && pattern.charAt(1) == '*') {
-            return isMatchRec(string, pattern.substring(2));
-        } else {
-            return false;
         }
+        return table[pattern.length()][string.length()] ? 1 : 0;
     }
 }
