@@ -12,16 +12,23 @@ public class ScrambleString {
         if (length == 0) return true;
         if (length == 1) return A.charAt(0) == B.charAt(0);
 
-        return
-                (
-                        isScrambleRec(A.substring(0, length / 2), B.substring(0, length / 2)) &&
-                                isScrambleRec(A.substring(length / 2, length), B.substring(length / 2, length))
-                )
-                        ||
-                        (
-                                isScrambleRec(A.substring(0, length / 2), B.substring(length - length / 2, length)) &&
-                                        isScrambleRec(A.substring(length - length / 2, length), B.substring(0, length / 2))
+        boolean result = false;
+        for (int index = 0; index < A.length(); index++) {
+            boolean isScrambleRec = (
+                    isScrambleRec(A.substring(0, index + 1), B.substring(0, index + 1)) &&
+                            isScrambleRec(A.substring(index + 1, length), B.substring(index + 1, length))
+            )
+                    ||
+                    (
+                            isScrambleRec(A.substring(0, index + 1), B.substring(length - index - 1, length)) &&
+                                    isScrambleRec(A.substring(length - index - 1, length), B.substring(0, index + 1))
 
-                        );
+                    );
+            result |= isScrambleRec;
+
+        }
+
+        return result;
+
     }
 }
