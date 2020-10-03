@@ -3,25 +3,56 @@ package com.daniel.goncharov.algorithm.playground.dp;
 public class ScrambleString {
 
     public int isScramble(final String A, final String B) {
-        return isScrambleRec(A, B) ? 1 : 0;
+        if (A.length() != B.length()) return 0;
+        return isScrambleRec(A, B, 0, 0, A.length()) ? 1 : 0;
     }
 
-    private boolean isScrambleRec(final String A, final String B) {
-        if (A.length() != B.length()) return false;
-        int length = A.length();
+    private boolean isScrambleRec(
+            String A,
+            String B,
+            int startA,
+            int startB,
+            int length
+    ) {
         if (length == 0) return true;
-        if (length == 1) return A.charAt(0) == B.charAt(0);
+        if (length == 1) return A.charAt(startA) == B.charAt(startB);
 
 
-        for (int index = 0; index < A.length(); index++) {
+        for (int index = startA; index < A.length(); index++) {
+
+
             if ((
-                    isScrambleRec(A.substring(0, index + 1), B.substring(0, index + 1)) &&
-                            isScrambleRec(A.substring(index + 1, length), B.substring(index + 1, length))
+                    isScrambleRec(
+                            A,
+                            B,
+                            startA,
+                            startB,
+                            index + 1
+                    ) &&
+                            isScrambleRec(
+                                    A,
+                                    B,
+                                    index + 1,
+                                    index + 1,
+                                    length - index
+                            )
             )
                     ||
                     (
-                            isScrambleRec(A.substring(0, index + 1), B.substring(length - index - 1, length)) &&
-                                    isScrambleRec(A.substring(length - index - 1, length), B.substring(0, index + 1))
+                            isScrambleRec(
+                                    A,
+                                    B,
+                                    startA,
+                                    length - index - 1,
+                                    index + 1
+                            ) &&
+                                    isScrambleRec(
+                                            A,
+                                            B,
+                                            length - index - 1,
+                                            startB,
+                                            index + 1
+                                    )
 
                     )) return true;
 
