@@ -12,9 +12,9 @@ public class ScrambleString {
         if (length == 0) return true;
         if (length == 1) return A.charAt(0) == B.charAt(0);
 
-        boolean result = false;
+
         for (int index = 0; index < A.length(); index++) {
-            boolean isScrambleRec = (
+            if ((
                     isScrambleRec(A.substring(0, index + 1), B.substring(0, index + 1)) &&
                             isScrambleRec(A.substring(index + 1, length), B.substring(index + 1, length))
             )
@@ -23,12 +23,11 @@ public class ScrambleString {
                             isScrambleRec(A.substring(0, index + 1), B.substring(length - index - 1, length)) &&
                                     isScrambleRec(A.substring(length - index - 1, length), B.substring(0, index + 1))
 
-                    );
-            result |= isScrambleRec;
+                    )) return true;
 
         }
 
-        return result;
+        return false;
 
     }
 }
