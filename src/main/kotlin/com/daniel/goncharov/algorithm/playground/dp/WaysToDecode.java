@@ -4,8 +4,6 @@ import java.util.HashMap;
 
 public class WaysToDecode {
 
-    private int numDecodings = 0;
-
     public int numDecodings(String encodedString) {
         if (encodedString.length() == 0) return 0;
         return countDecodings(encodedString, 0, 1, new HashMap<>());
@@ -36,5 +34,4 @@ public class WaysToDecode {
         return contiguesResult + nextIsSeparateResult;
 
     }
-
 }
