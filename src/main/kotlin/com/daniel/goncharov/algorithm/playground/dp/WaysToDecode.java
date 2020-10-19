@@ -17,10 +17,12 @@ public class WaysToDecode {
     ) {
 
         int value = Integer.valueOf(encodedString.substring(left, right));
-        if (value < 27) return 0;
+        if (value >= 27) return 0;
         if (right == encodedString.length()) return 1;
         String key = new StringBuilder().append(left).append(right).toString();
-        if (cache.containsKey(key)) return cache.get(cache);
+        if (cache.containsKey(key)) {
+            return cache.get(key);
+        }
 
 
         int contiguesResult = countDecodings(encodedString, left, right + 1, cache);
