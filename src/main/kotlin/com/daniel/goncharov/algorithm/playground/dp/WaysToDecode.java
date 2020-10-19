@@ -17,7 +17,7 @@ public class WaysToDecode {
     ) {
 
         int value = Integer.valueOf(encodedString.substring(left, right));
-        if (value >= 27) return 0;
+        if (value >= 27 || value==0) return 0;
         if (right == encodedString.length()) return 1;
         String key = new StringBuilder().append(left).append(right).toString();
         if (cache.containsKey(key)) {
