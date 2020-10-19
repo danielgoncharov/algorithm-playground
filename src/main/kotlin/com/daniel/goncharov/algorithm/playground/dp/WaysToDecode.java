@@ -33,7 +33,7 @@ public class WaysToDecode {
         key = new StringBuilder().append(right).append(right + 1).toString();
         cache.put(key, nextIsSeparateResult);
 
-        return contiguesResult + nextIsSeparateResult;
+        return (contiguesResult + nextIsSeparateResult)%1000000007;
 
     }
 }
