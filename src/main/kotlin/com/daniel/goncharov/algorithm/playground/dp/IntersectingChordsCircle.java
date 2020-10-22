@@ -6,7 +6,7 @@ import java.util.Map;
 public class IntersectingChordsCircle {
 
     public int chordCnt(int chordsNumber) {
-        return countChords(0, chordsNumber, new HashMap<>());
+        return countChords(0, chordsNumber * 2, new HashMap<>());
     }
 
     private int countChords(
