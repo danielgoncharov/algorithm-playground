@@ -14,7 +14,6 @@ public class IntersectingChordsCircle {
             int right,
             Map<Integer, Integer> memo
     ) {
-        if (left == 1 || right == 1) return 0;
         if (
                 (left == 2 && right == 2) ||
                         (left == 2 && right == 0) ||
