@@ -17,14 +17,11 @@ public class TusharBirthdayBombs {
             HashMap<Integer, ArrayList<Integer>> cache
     ) {
         if (cache.containsKey(temp.hashCode())) return cache.get(temp.hashCode());
-        if (sum > limit) {
-            temp.remove(temp.size() - 1);
-            return temp;
-        }
         cache.put(temp.hashCode(), new ArrayList<>(temp));
         ArrayList<Integer> max = new ArrayList<>();
         for (int i = 0; i < hits.size(); i++) {
             int currentElement = hits.get(i);
+            if(sum+currentElement>limit) continue;
             temp.add(currentElement);
             ArrayList<Integer> result = solveRec(
                     limit,
@@ -36,6 +33,7 @@ public class TusharBirthdayBombs {
             if (result.size() > max.size()) {
                 max = result;
             }
+            temp.remove(temp.size() - 1);
         }
         return max;
     }
