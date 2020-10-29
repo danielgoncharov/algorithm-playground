@@ -1,48 +1,39 @@
 package com.daniel.goncharov.algorithm.playground.dp;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 
 public class TusharBirthdayBombs {
 
     public ArrayList<Integer> solve(int limit, ArrayList<Integer> hits) {
-        return solveRec(limit, hits, new ArrayList<>(), 0, new HashMap<>());
-    }
 
-    private ArrayList<Integer> solveRec(
-            int limit,
-            ArrayList<Integer> hits,
-            ArrayList<Integer> temp,
-            int sum,
-            HashMap<Integer, ArrayList<Integer>> cache
-    ) {
+        int min = Collections.min(hits);
+        int minIndex = hits.indexOf(min);
+        int repeats = limit / min;
+        int totalStrengh = repeats * min;
 
-        if (cache.containsKey(temp.hashCode())) return cache.get(temp.hashCode());
-        cache.put(temp.hashCode(), new ArrayList<>(temp));
-        ArrayList<Integer> max = new ArrayList<>();
-        for (int i = 0; i < hits.size(); i++) {
-            int currentElement = hits.get(i);
-            int newSum = sum + currentElement;
-            if (newSum > limit) continue;
-            temp.add(i);
-            ArrayList<Integer> result;
-            if (newSum < limit) {
-                result = solveRec(
-                        limit,
-                        hits,
-                        temp,
-                        sum + currentElement,
-                        cache
-                );
+        ArrayList<Integer> result = new ArrayList<>();
+        int index = 0;
+        while (index < minIndex) {
+            int currentElement = hits.get(index);
+            int tryLex = totalStrengh - min + currentElement;
+            if (tryLex == limit) {
+                repeats--;
+                result.add(index);
+                break;
+            } else if (tryLex < limit) {
+                repeats--;
+                totalStrengh = tryLex;
+                result.add(index);
             } else {
-                result = temp;
+                index++;
             }
-            if (result.size() > max.size()) {
-                max.clear();
-                max.addAll(result);
-            }
-            temp.remove(temp.size() - 1);
         }
-        return max;
+        for (int i = 0; i < repeats; i++) {
+            result.add(min);
+        }
+        return result;
     }
+
+
 }
