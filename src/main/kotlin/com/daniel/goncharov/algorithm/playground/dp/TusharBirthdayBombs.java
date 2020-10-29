@@ -5,34 +5,21 @@ import java.util.Collections;
 
 public class TusharBirthdayBombs {
 
-    public ArrayList<Integer> solve(int limit, ArrayList<Integer> hits) {
+    public ArrayList<Integer> solve(int A, ArrayList<Integer> B) {
+        ArrayList<Integer> resp = new ArrayList<>();
+        int min = Collections.min(B);
+        int available = A % min;
 
-        int min = Collections.min(hits);
-        int minIndex = hits.indexOf(min);
-        int repeats = limit / min;
-        int totalStrengh = repeats * min;
-
-        ArrayList<Integer> result = new ArrayList<>();
-        int index = 0;
-        while (index < minIndex) {
-            int currentElement = hits.get(index);
-            int tryLex = totalStrengh - min + currentElement;
-            if (tryLex == limit) {
-                repeats--;
-                result.add(index);
-                break;
-            } else if (tryLex < limit) {
-                repeats--;
-                totalStrengh = tryLex;
-                result.add(index);
+        int i = 0;
+        while (resp.size() < A / min) {
+            if (B.get(i) - min <= available) {
+                available -= B.get(i) - min;
+                resp.add(i);
             } else {
-                index++;
+                i++;
             }
         }
-        for (int i = 0; i < repeats; i++) {
-            result.add(min);
-        }
-        return result;
+        return resp;
     }
 
 
