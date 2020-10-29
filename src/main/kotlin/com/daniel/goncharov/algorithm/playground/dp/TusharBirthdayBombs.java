@@ -6,11 +6,10 @@ import java.util.Collections;
 public class TusharBirthdayBombs {
 
     public ArrayList<Integer> solve(int A, ArrayList<Integer> B) {
-        ArrayList<Integer> resp = new ArrayList<>();
         int min = Collections.min(B);
         int available = A % min;
-
         int i = 0;
+        ArrayList<Integer> resp = new ArrayList<>();
         while (resp.size() < A / min) {
             if (B.get(i) - min <= available) {
                 available -= B.get(i) - min;
