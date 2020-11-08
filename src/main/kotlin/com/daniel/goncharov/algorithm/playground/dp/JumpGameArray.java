@@ -1,4 +1,4 @@
-package com.daniel.goncharov.algorithm.playground.linkedlist;
+package com.daniel.goncharov.algorithm.playground.dp;
 
 import java.util.ArrayList;
 
