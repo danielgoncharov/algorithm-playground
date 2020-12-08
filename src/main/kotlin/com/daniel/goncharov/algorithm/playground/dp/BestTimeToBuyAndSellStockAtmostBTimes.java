@@ -46,6 +46,7 @@ public class BestTimeToBuyAndSellStockAtmostBTimes {
             }
             transactions--;
         }
+        maxHeap.clear();
         return max;
     }
 }
