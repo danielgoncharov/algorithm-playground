@@ -1,7 +1,6 @@
 package com.daniel.goncharov.algorithm.playground.dp;
 
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 public class BestTimeToBuyAndSellStockAtmostBTimes {
 
@@ -16,37 +15,23 @@ public class BestTimeToBuyAndSellStockAtmostBTimes {
                 }
             }
         }
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((o1, o2) -> -Integer.compare(o1, o2));
+
+        int lastJStart = profits.length - 1;
+        int i = profits.length - 2;
+        int j = lastJStart;
         int maxSum = 0;
-        int line = 1;
-        int i = 0;
-        int j = 1;
-        while (line != stocks.size()) {
-            maxHeap.add(profits[i][j]);
-            i++;
+        while (i >= 0) {
+            int lastMax = j + 1 < profits.length ? profits[j][j + 1] : 0;
+            profits[i][j] = Math.max(0, profits[i][j]) + lastMax;
+            maxSum = Math.max(profits[i][j], maxSum);
             j++;
-            if (j == stocks.size()) {
-                maxSum = Math.max(maxSum, getMaxSum(maxHeap, transactions));
-                line++;
-                i = 0;
-                j = line;
+            if (j == profits.length) {
+                i--;
+                lastJStart--;
+                j = lastJStart;
             }
         }
 
         return maxSum;
-    }
-
-    private int getMaxSum(PriorityQueue<Integer> maxHeap, int transactions) {
-        int max = 0;
-        while (transactions != 0) {
-            if (maxHeap.isEmpty()) break;
-            int element = maxHeap.poll();
-            if (element >= 0) {
-                max += element;
-            }
-            transactions--;
-        }
-        maxHeap.clear();
-        return max;
     }
 }
