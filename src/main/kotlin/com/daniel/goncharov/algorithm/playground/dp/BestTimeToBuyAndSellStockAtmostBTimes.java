@@ -4,34 +4,24 @@ import java.util.ArrayList;
 
 public class BestTimeToBuyAndSellStockAtmostBTimes {
 
-    public int solve(ArrayList<Integer> stocks, int transactions) {
-        int[][] profits = new int[stocks.size()][stocks.size()];
-        for (int i = 0; i < stocks.size(); i++) {
-            for (int j = i; j < stocks.size(); j++) {
-                if (i == j) {
-                    profits[i][j] = 0;
-                } else {
-                    profits[i][j] = stocks.get(j) - stocks.get(i);
-                }
+    public int solve(ArrayList<Integer> prices, int transactions) {
+        int[][] diff = new int[transactions + 1][prices.size() + 1];
+        for (int i = 1; i < diff.length; i++) {
+            for (int j = 1; j < diff[i].length; j++) {
+                diff[i][j] = Math.max(
+                        diff[i - 1][j - 1] - prices.get(j - 1),
+                        j == 1 ? Integer.MIN_VALUE : diff[i][j - 1]
+                );
             }
         }
 
-        int lastJStart = profits.length - 1;
-        int i = profits.length - 2;
-        int j = lastJStart;
-        int maxSum = 0;
-        while (i >= 0) {
-            int lastMax = j + 1 < profits.length ? profits[j][j + 1] : 0;
-            profits[i][j] = Math.max(0, profits[i][j]) + lastMax;
-            maxSum = Math.max(profits[i][j], maxSum);
-            j++;
-            if (j == profits.length) {
-                i--;
-                lastJStart--;
-                j = lastJStart;
+        int max = 0;
+        for (int i = 1; i < diff.length; i++) {
+            for (int j = 1; j < diff[i].length - 1; j++) {
+                max = Math.max(diff[i][j] + prices.get(j), max);
             }
         }
+        return max;
 
-        return maxSum;
     }
 }
