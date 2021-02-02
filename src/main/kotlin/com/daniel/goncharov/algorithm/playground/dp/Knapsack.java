@@ -37,18 +37,18 @@ public class Knapsack {
 
     private int solveRecursive(ArrayList<Integer> values,
                                ArrayList<Integer> weights,
-                               int remainingSize,
-                               int itemNumber) {
-        if (remainingSize == 0 || itemNumber < 0) {
+                               int weight,
+                               int i) {
+        if (weight == 0 || i < 0) {
             return 0;
         }
-        int currentWeight = weights.get(itemNumber);
-        if (remainingSize - currentWeight < 0) {
-            return solveRecursive(values, weights, remainingSize, itemNumber - 1);
+        int currentWeight = weights.get(i);
+        if (currentWeight > weight) {
+            return solveRecursive(values, weights, weight, i - 1);
         } else {
             return Math.max(
-                    solveRecursive(values, weights, remainingSize, itemNumber - 1),
-                    solveRecursive(values, weights, remainingSize - currentWeight, itemNumber - 1) + values.get(itemNumber)
+                    solveRecursive(values, weights, weight, i - 1),
+                    solveRecursive(values, weights, weight - currentWeight, i - 1) + values.get(i)
             );
         }
     }
