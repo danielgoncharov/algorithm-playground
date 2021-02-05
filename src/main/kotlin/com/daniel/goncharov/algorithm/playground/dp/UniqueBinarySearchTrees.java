@@ -1,13 +1,22 @@
 package com.daniel.goncharov.algorithm.playground.dp;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class UniqueBinarySearchTrees {
 
     public int numTrees(int A) {
-        Map<Integer, Integer> map = new HashMap<>();
-        return numTreesRecursive(1, A, map);
+        return numTreesIterative(A);
+    }
+
+    public int numTreesIterative(int limit) {
+        int[] dp = new int[limit + 1];
+        dp[0] = dp[1] = 1;
+        for (int n = 2; n <= limit; n++) {
+            for (int root = 1; root <= n; root++) {
+                dp[n] += dp[root - 1] * dp[n - root];
+            }
+        }
+        return dp[limit];
     }
 
     private int numTreesRecursive(
