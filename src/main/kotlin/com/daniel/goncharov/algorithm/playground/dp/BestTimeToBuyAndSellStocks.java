@@ -26,7 +26,7 @@ public class BestTimeToBuyAndSellStocks {
         int sell = maxProfitRecursive(
                 dayPrices,
                 currentPosition + 1,
-                profit,
+                profit + dayPrices.get(currentPosition),
                 false
         );
         int doNothing = maxProfitRecursive(
