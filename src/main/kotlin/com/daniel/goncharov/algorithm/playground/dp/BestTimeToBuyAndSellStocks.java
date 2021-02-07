@@ -19,7 +19,7 @@ public class BestTimeToBuyAndSellStocks {
             List<Integer> dayPrices,
             int currentPosition,
             int profit,
-            Boolean inTransaction
+            boolean inTransaction
     ) {
         if (currentPosition == dayPrices.size()) return 0;
 
