@@ -5,7 +5,12 @@ import java.util.List;
 public class BestTimeToBuyAndSellStocks {
 
     public int maxProfit(final List<Integer> dayPrices) {
-        return maxProfitRecursive(dayPrices, 0, 0, false);
+        return maxProfitRecursive(
+                dayPrices,
+                0,
+                0,
+                false
+        );
     }
 
     private int maxProfitRecursive(
