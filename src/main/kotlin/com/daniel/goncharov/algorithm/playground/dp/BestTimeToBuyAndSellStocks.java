@@ -13,6 +13,8 @@ public class BestTimeToBuyAndSellStocks {
         );
     }
 
+    //for memo cache[position][current_profit][operation] = max
+    //current_profit => [0,2*sum]
     private int maxProfitRecursive(
             List<Integer> dayPrices,
             int currentPosition,
