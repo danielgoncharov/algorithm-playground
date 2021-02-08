@@ -23,10 +23,10 @@ public class BestTimeToBuyAndSellStocks {
     ) {
         if (currentPosition == dayPrices.size()) return 0;
 
-        int result;
+        int transaction;
         if (inTransaction) {
             //sell
-            result = maxProfitRecursive(
+            transaction = maxProfitRecursive(
                     dayPrices,
                     currentPosition + 1,
                     profit + dayPrices.get(currentPosition),
@@ -34,7 +34,7 @@ public class BestTimeToBuyAndSellStocks {
             );
         } else {
             //buy
-            result = maxProfitRecursive(
+            transaction = maxProfitRecursive(
                     dayPrices,
                     currentPosition + 1,
                     profit - dayPrices.get(currentPosition),
@@ -47,7 +47,7 @@ public class BestTimeToBuyAndSellStocks {
                 profit,
                 inTransaction
         );
-        return Math.max(result, doNothing);
+        return Math.max(transaction, doNothing);
     }
 
 }
