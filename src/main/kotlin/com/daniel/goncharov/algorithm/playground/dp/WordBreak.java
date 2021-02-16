@@ -30,10 +30,11 @@ public class WordBreak {
                 for (String result : results) {
                     arrayList.add(word + " " + result);
                 }
+                map.put(index, arrayList);
             }
 
         }
-        map.put(index, arrayList);
+
         return arrayList;
     }
 
