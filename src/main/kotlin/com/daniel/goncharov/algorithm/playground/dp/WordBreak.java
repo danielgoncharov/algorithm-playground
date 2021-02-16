@@ -1,40 +1,39 @@
 package com.daniel.goncharov.algorithm.playground.dp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WordBreak {
 
     public ArrayList<String> wordBreak(String string, ArrayList<String> dict) {
-        return wordBreakRecursive(0, 0, string, dict, "", 0);
+        return wordBreakRecursive(0, string, dict, new HashMap<>());
     }
 
     private ArrayList<String> wordBreakRecursive(
-            int left,
-            int right,
+            int index,
             String string,
             ArrayList<String> dict,
-            String result,
-            int resultSize
+            Map<Integer, ArrayList<String>> map
     ) {
+        if (map.containsKey(index)) {
+            return map.get(index);
+        }
         ArrayList<String> arrayList = new ArrayList<>();
-        if (resultSize == string.length()) {
-            arrayList.add(result);
+        if (index == string.length()) {
             return arrayList;
         }
-        if (right >= string.length()) {
-            return arrayList;
+        for (int i = index; i < string.length(); i++) {
+            String word = string.substring(index, i + 1);
+            if (dict.contains(word)) {
+                ArrayList<String> results = wordBreakRecursive(i + 1, string, dict, map);
+                for (String result : results) {
+                    arrayList.add(word + " " + result);
+                }
+            }
+
         }
-        String word = string.substring(left, right + 1);
-        if (dict.contains(word)) {
-            result += " " + word;
-            resultSize += word.length();
-            arrayList.addAll(
-                    wordBreakRecursive(right + 1, right + 1, string, dict, result, resultSize)
-            );
-        }
-        arrayList.addAll(
-                wordBreakRecursive(left, right + 1, string, dict, result, resultSize)
-        );
+        map.put(index, arrayList);
         return arrayList;
     }
 
