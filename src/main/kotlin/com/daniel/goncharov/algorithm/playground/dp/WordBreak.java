@@ -25,13 +25,17 @@ public class WordBreak {
         }
         for (int i = index; i < string.length(); i++) {
             String word = string.substring(index, i + 1);
-            if (dict.contains(word)) {
-                ArrayList<String> results = wordBreakRecursive(i + 1, string, dict, map);
-                for (String result : results) {
-                    arrayList.add(word + " " + result);
-                }
-                map.put(index, arrayList);
+            if (!dict.contains(word)) continue;
+            if (i == string.length() - 1) {
+                arrayList.add(word);
+                return arrayList;
             }
+            ArrayList<String> results = wordBreakRecursive(i + 1, string, dict, map);
+            for (String result : results) {
+                arrayList.add(word + " " + result);
+            }
+            map.put(index, arrayList);
+
 
         }
 
