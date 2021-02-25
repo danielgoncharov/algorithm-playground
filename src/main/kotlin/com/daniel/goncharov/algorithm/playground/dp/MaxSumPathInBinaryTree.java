@@ -15,20 +15,23 @@ public class MaxSumPathInBinaryTree {
             TreeNode root,
             Map<TreeNode, Integer> cache
     ) {
-        if (root == null) return 0;
+        if (root == null) return -2000;
         if (root.left == null && root.right == null) return root.val;
         if (cache.containsKey(root)) return cache.get(root);
 
-        return max(
+        int maxForRoot = max(
                 maxPathSumRec(root.left, cache),
                 maxPathSumRec(root.right, cache),
                 root.val + maxPathSumRec(root.left, cache) + maxPathSumRec(root.right, cache),
                 root.val + maxPathSumRec(root.left, cache),
-                root.val + maxPathSumRec(root.right, cache)
+                root.val + maxPathSumRec(root.right, cache),
+                root.val
         );
+        cache.put(root, maxForRoot);
+        return maxForRoot;
     }
 
-    private int max(int a, int b, int c, int d, int e) {
-        return Math.max(a, Math.max(b, Math.max(c, Math.max(d, e))));
+    private int max(int a, int b, int c, int d, int e, int f) {
+        return Math.max(a, Math.max(b, Math.max(c, Math.max(d, Math.max(e, f)))));
     }
 }
