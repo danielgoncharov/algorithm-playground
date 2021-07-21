@@ -1,5 +1,6 @@
 package com.daniel.goncharov.algorithm.playground.two.pointers
 
+import com.daniel.goncharov.algorithm.playground.pointers.IntersectionSortedArrays
 import org.junit.Test
 
 class IntersectionSortedArraysTest {

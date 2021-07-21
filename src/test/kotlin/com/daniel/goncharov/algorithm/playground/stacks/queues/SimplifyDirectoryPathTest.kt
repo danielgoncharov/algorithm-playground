@@ -1,5 +1,6 @@
 package com.daniel.goncharov.algorithm.playground.stacks.queues
 
+import com.daniel.goncharov.algorithm.playground.queues.SimplifyDirectoryPath
 import org.junit.Test
 
 class SimplifyDirectoryPathTest {

@@ -1,6 +1,7 @@
 package com.daniel.goncharov.algorithm.playground.binary.search
 
 
+import com.daniel.goncharov.algorithm.playground.search.BinarySearch
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 

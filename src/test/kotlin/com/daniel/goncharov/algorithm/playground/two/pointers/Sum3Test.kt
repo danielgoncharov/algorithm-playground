@@ -1,5 +1,6 @@
 package com.daniel.goncharov.algorithm.playground.two.pointers
 
+import com.daniel.goncharov.algorithm.playground.pointers.Sum3
 import org.assertj.core.api.Assertions
 import org.junit.Test
 

@@ -1,5 +1,6 @@
 package com.daniel.goncharov.algorithm.playground.stacks.queues
 
+import com.daniel.goncharov.algorithm.playground.queues.RainWaterTrapped
 import org.assertj.core.api.Assertions
 import org.junit.Test
 
