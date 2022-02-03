@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 // https://www.youtube.com/watch?v=4ZlRH0eK-qQ
 // https://www.youtube.com/watch?v=wU6udHRIkcc
@@ -17,18 +18,61 @@ public class CommutableIslands {
     }
 
 
-    private int solveKruskal() {
-        return 0;
+    private int solveKruskal(
+            int numberIslands,
+            int[][] adjacency
+    ) {
+        int[] disjointSet = IntStream.range(0, numberIslands)
+                .map(ignored -> -1)
+                .toArray();
+        List<Node> nodes = createNodesList(numberIslands, adjacency);
+        int sum = 0;
+        while (!nodes.isEmpty()) {
+            Node currentNode = nodes.stream()
+                    .min(Node::compareTo)
+                    .get();
+            if (unionFind(disjointSet, currentNode)) {
+                sum += currentNode.weight;
+            }
+            nodes.remove(currentNode);
+        }
+        return sum;
+    }
+
+    private boolean unionFind(int[] disjointSet, Node currentNode) {
+        int firstIndex = currentNode.firstIndex;
+        int secondIndex = currentNode.secondIndex;
+
+        int firstIndexParent = findParent(disjointSet, firstIndex - 1);
+        int secondIndexParent = findParent(disjointSet, secondIndex - 1);
+
+        if (firstIndexParent == secondIndexParent) {
+            return false;
+        }
+
+        if (disjointSet[firstIndexParent] <= disjointSet[secondIndexParent]) {
+            disjointSet[firstIndexParent] = disjointSet[firstIndexParent] + disjointSet[secondIndexParent];
+            disjointSet[secondIndexParent] = firstIndexParent;
+        } else {
+            disjointSet[secondIndexParent] = disjointSet[firstIndexParent] + disjointSet[secondIndexParent];
+            disjointSet[firstIndexParent] = secondIndexParent;
+        }
+        return true;
+    }
+
+    private int findParent(int[] disjointSet, int index) {
+        if (disjointSet[index] > 0) {
+            findParent(disjointSet, disjointSet[index]);
+        } else {
+            return index;
+        }
     }
 
     private int solvePrim(
             int numberIslands,
             int[][] adjacency
     ) {
-        List<Node> nodes =
-                Arrays.stream(adjacency)
-                        .map(array -> new Node(array[0], array[1], array[2]))
-                        .collect(Collectors.toList());
+        List<Node> nodes = createNodesList(numberIslands, adjacency);
         Node minEdge = Collections.min(nodes);
         nodes.remove(minEdge);
         int sum = 0;
@@ -46,14 +90,24 @@ public class CommutableIslands {
         return sum;
     }
 
+    private List<Node> createNodesList(
+            int numberIslands,
+            int[][] adjacency
+    ) {
+        return IntStream.range(0, numberIslands)
+                .mapToObj(index -> new Node(index, adjacency[index][0], adjacency[index][1], adjacency[index][2]))
+                .collect(Collectors.toList());
+    }
+
 
     private static class Node implements Comparable<Node> {
+        final int id;
         final int firstIndex;
         final int secondIndex;
         final Integer weight;
 
-        public Node(int firstIndex, int secondIndex, int weight) {
-
+        public Node(int id, int firstIndex, int secondIndex, int weight) {
+            this.id = id;
             this.firstIndex = firstIndex;
             this.secondIndex = secondIndex;
             this.weight = weight;
@@ -64,12 +118,12 @@ public class CommutableIslands {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Node node = (Node) o;
-            return firstIndex == node.firstIndex && secondIndex == node.secondIndex;
+            return id == node.id;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(firstIndex, secondIndex);
+            return Objects.hash(id);
         }
 
         @Override
