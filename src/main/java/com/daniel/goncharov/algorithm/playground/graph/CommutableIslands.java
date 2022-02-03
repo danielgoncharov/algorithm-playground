@@ -14,7 +14,7 @@ public class CommutableIslands {
             int numberIslands,
             int[][] adjacency
     ) {
-
+        return solveKruskal(numberIslands, adjacency);
     }
 
 
