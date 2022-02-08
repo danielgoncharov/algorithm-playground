@@ -14,7 +14,7 @@ public class CommutableIslands {
             int numberIslands,
             int[][] adjacency
     ) {
-        return solveKruskal(numberIslands, adjacency);
+        return solvePrim(numberIslands, adjacency);
     }
 
 
@@ -75,11 +75,15 @@ public class CommutableIslands {
         List<Node> nodes = createNodesList(adjacency);
         Node minEdge = Collections.min(nodes);
         nodes.remove(minEdge);
-        int sum = 0;
+        int sum = minEdge.weight;
         Set<Integer> visitedSet = new HashSet<>();
-        while (visitedSet.size() == numberIslands) {
+        visitedSet.add(minEdge.firstIndex);
+        visitedSet.add(minEdge.secondIndex);
+        while (visitedSet.size() != numberIslands) {
             Node currentNode = nodes.stream()
-                    .filter(node -> visitedSet.contains(node.firstIndex) ^ visitedSet.contains(node.secondIndex))
+                    .filter(node ->
+                            (visitedSet.contains(node.firstIndex) ^ visitedSet.contains(node.secondIndex))
+                    )
                     .min(Node::compareTo)
                     .get();
             nodes.remove(currentNode);
