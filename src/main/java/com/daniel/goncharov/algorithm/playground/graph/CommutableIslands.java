@@ -25,7 +25,7 @@ public class CommutableIslands {
         int[] disjointSet = IntStream.range(0, numberIslands)
                 .map(ignored -> -1)
                 .toArray();
-        List<Node> nodes = createNodesList(numberIslands, adjacency);
+        List<Node> nodes = createNodesList(adjacency);
         int sum = 0;
         while (!nodes.isEmpty()) {
             Node currentNode = nodes.stream()
@@ -72,7 +72,7 @@ public class CommutableIslands {
             int numberIslands,
             int[][] adjacency
     ) {
-        List<Node> nodes = createNodesList(numberIslands, adjacency);
+        List<Node> nodes = createNodesList(adjacency);
         Node minEdge = Collections.min(nodes);
         nodes.remove(minEdge);
         int sum = 0;
@@ -91,10 +91,9 @@ public class CommutableIslands {
     }
 
     private List<Node> createNodesList(
-            int numberIslands,
             int[][] adjacency
     ) {
-        return IntStream.range(0, numberIslands)
+        return IntStream.range(0, adjacency.length)
                 .mapToObj(index -> new Node(index, adjacency[index][0], adjacency[index][1], adjacency[index][2]))
                 .collect(Collectors.toList());
     }
