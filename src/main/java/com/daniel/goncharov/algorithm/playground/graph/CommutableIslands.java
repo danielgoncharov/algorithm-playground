@@ -61,7 +61,7 @@ public class CommutableIslands {
     }
 
     private int findParent(int[] disjointSet, int index) {
-        if (disjointSet[index] > 0) {
+        if (disjointSet[index] >= 0) {
             return findParent(disjointSet, disjointSet[index]);
         } else {
             return index;
