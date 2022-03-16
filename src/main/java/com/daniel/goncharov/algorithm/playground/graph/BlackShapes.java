@@ -24,22 +24,39 @@ public class BlackShapes {
         while (!stack.isEmpty()) {
             Node node = stack.pop();
             node.visited();
+
+            int indexNodeToTop = node.i - 1;
+            if (indexNodeToTop > 0) {
+                Node nodeToBottom = nodeMatrix.get(indexNodeToTop).get(node.j);
+                addNodeToStack(nodeToBottom, stack);
+            }
+
             int indexNodeToBottom = node.i + 1;
             if (indexNodeToBottom < nodeMatrix.size()) {
                 Node nodeToBottom = nodeMatrix.get(indexNodeToBottom).get(node.j);
                 addNodeToStack(nodeToBottom, stack);
             }
+
             int indexNodeToRight = node.j + 1;
-            if (indexNodeToRight < nodeMatrix.size()) {
+            if (indexNodeToRight < nodeMatrix.get(0).size()) {
                 Node nodeToRight = nodeMatrix.get(node.i).get(indexNodeToRight);
                 addNodeToStack(nodeToRight, stack);
+            }
+
+            int indexNodeToLeft = node.j - 1;
+            if (indexNodeToLeft > 0) {
+                Node nodeToLeft = nodeMatrix.get(node.i).get(indexNodeToLeft);
+                addNodeToStack(nodeToLeft, stack);
             }
         }
         return 1;
     }
 
-    private void addNodeToStack(Node nodeToBottom, Stack<Node> stack) {
-        if (nodeToBottom.isBlack) {
+    private void addNodeToStack(
+            Node nodeToBottom,
+            Stack<Node> stack
+    ) {
+        if (nodeToBottom.isBlack && !nodeToBottom.isVisited) {
             stack.add(nodeToBottom);
         }
     }
