@@ -27,8 +27,8 @@ public class BlackShapes {
 
             int indexNodeToTop = node.i - 1;
             if (indexNodeToTop > 0) {
-                Node nodeToBottom = nodeMatrix.get(indexNodeToTop).get(node.j);
-                addNodeToStack(nodeToBottom, stack);
+                Node nodeToTop = nodeMatrix.get(indexNodeToTop).get(node.j);
+                addNodeToStack(nodeToTop, stack);
             }
 
             int indexNodeToBottom = node.i + 1;
