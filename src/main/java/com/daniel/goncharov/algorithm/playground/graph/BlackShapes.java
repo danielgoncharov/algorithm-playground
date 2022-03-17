@@ -26,7 +26,7 @@ public class BlackShapes {
             node.visited();
 
             int indexNodeToTop = node.i - 1;
-            if (indexNodeToTop > 0) {
+            if (indexNodeToTop >= 0) {
                 Node nodeToTop = nodeMatrix.get(indexNodeToTop).get(node.j);
                 addNodeToStack(nodeToTop, stack);
             }
@@ -44,7 +44,7 @@ public class BlackShapes {
             }
 
             int indexNodeToLeft = node.j - 1;
-            if (indexNodeToLeft > 0) {
+            if (indexNodeToLeft >= 0) {
                 Node nodeToLeft = nodeMatrix.get(node.i).get(indexNodeToLeft);
                 addNodeToStack(nodeToLeft, stack);
             }
