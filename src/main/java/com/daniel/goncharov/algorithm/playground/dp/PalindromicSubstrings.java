@@ -20,6 +20,7 @@ public class PalindromicSubstrings {
             int rightIndex) {
         if (leftIndex < 0 || rightIndex >= baseString.length()) return 0;
         if (baseString.charAt(leftIndex) != baseString.charAt(rightIndex)) return 0;
-        return 1 + countPalindromes(baseString, leftIndex + 1, rightIndex + 1);
+        return 1 + countPalindromes(baseString, leftIndex - 1, rightIndex + 1);
     }
+
 }
