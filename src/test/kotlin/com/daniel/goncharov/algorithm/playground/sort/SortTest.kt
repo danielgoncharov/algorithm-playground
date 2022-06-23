@@ -1,5 +1,7 @@
 package com.daniel.goncharov.algorithm.playground.sort
 
+import com.daniel.goncharov.algorithm.playground.interviewbit.sort.QuickSort
+import com.daniel.goncharov.algorithm.playground.interviewbit.sort.Sort
 import org.junit.Before
 import org.junit.Test
 

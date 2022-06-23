@@ -1,5 +1,6 @@
 package com.daniel.goncharov.algorithm.playground.backtracking
 
+import com.daniel.goncharov.algorithm.playground.interviewbit.backtracking.Sudoku
 import org.junit.Test
 
 class SudokuTest {

@@ -1,12 +1,13 @@
 package com.daniel.goncharov.algorithm.playground.stacks.queues
 
-import com.daniel.goncharov.algorithm.playground.queues.LargestRectangleInHistogram
+import com.daniel.goncharov.algorithm.playground.interviewbit.queues.LargestRectangleInHistogram
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class LargestRectangleInHistogramTest {
 
-    private val largestRectangleInHistogram = LargestRectangleInHistogram()
+    private val largestRectangleInHistogram =
+        LargestRectangleInHistogram()
 
     @Test
     fun shouldCalculateTrivial() {

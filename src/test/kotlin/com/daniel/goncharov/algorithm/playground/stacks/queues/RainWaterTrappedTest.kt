@@ -1,12 +1,13 @@
 package com.daniel.goncharov.algorithm.playground.stacks.queues
 
-import com.daniel.goncharov.algorithm.playground.queues.RainWaterTrapped
+import com.daniel.goncharov.algorithm.playground.interviewbit.queues.RainWaterTrapped
 import org.assertj.core.api.Assertions
 import org.junit.Test
 
 class RainWaterTrappedTest {
 
-    private val rainWaterTrapped = RainWaterTrapped()
+    private val rainWaterTrapped =
+        RainWaterTrapped()
 
     @Test
     fun shouldCalculateTrivial() {

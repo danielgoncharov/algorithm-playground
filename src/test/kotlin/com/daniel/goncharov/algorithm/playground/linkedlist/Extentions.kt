@@ -1,5 +1,7 @@
 package com.daniel.goncharov.algorithm.playground.linkedlist
 
+import com.daniel.goncharov.algorithm.playground.interviewbit.linkedlist.ListNode
+
 fun List<Int>.toLinkedList(): ListNode {
     var head: ListNode? = null
     var nextNode: ListNode? = null
@@ -8,7 +10,8 @@ fun List<Int>.toLinkedList(): ListNode {
             head = ListNode(value)
             nextNode = head
         } else {
-            nextNode?.next = ListNode(value)
+            nextNode?.next =
+                ListNode(value)
             nextNode = nextNode?.next;
         }
     }

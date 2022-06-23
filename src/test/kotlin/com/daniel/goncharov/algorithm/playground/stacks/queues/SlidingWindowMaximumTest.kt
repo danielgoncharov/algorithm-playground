@@ -1,12 +1,13 @@
 package com.daniel.goncharov.algorithm.playground.stacks.queues
 
-import com.daniel.goncharov.algorithm.playground.queues.SlidingWindowMaximum
+import com.daniel.goncharov.algorithm.playground.interviewbit.queues.SlidingWindowMaximum
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class SlidingWindowMaximumTest {
 
-    private val slidingWindowMaximum = SlidingWindowMaximum()
+    private val slidingWindowMaximum =
+        SlidingWindowMaximum()
 
     @Test
     fun shouldCalculateTrivial1() {

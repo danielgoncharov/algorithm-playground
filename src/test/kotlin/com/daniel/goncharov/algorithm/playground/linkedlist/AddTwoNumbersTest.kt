@@ -1,5 +1,7 @@
 package com.daniel.goncharov.algorithm.playground.linkedlist
 
+import com.daniel.goncharov.algorithm.playground.interviewbit.linkedlist.ListCycle
+import com.daniel.goncharov.algorithm.playground.interviewbit.linkedlist.ListNode
 import org.junit.Test
 
 class AddTwoNumbersTest {
