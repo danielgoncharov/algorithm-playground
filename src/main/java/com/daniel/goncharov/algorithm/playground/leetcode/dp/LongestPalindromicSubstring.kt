@@ -5,6 +5,10 @@ class LongestPalindromicSubstring {
         return longestPalindromeTopToBottom(string)
     }
 
+    private fun longestPalindromeRec() {
+
+    }
+
     private fun longestPalindromeTopToBottom(string: String): String {
         val cache = Array(string.length) { BooleanArray(string.length) }
         for (i in string.indices) {
@@ -31,10 +35,6 @@ class LongestPalindromicSubstring {
             }
         }
         return string.substring(left, right + 1)
-    }
-
-    private fun longestPalindromeRec() {
-
     }
 }
 //
