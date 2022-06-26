@@ -1,12 +1,37 @@
 package com.daniel.goncharov.algorithm.playground.leetcode.dp
 
 class LongestPalindromicSubstring {
+
     fun longestPalindrome(string: String): String {
         return longestPalindromeTopToBottom(string)
     }
 
-    private fun longestPalindromeRec() {
+    var max = 0
+    var left = 0
+    var right = 0
 
+    private fun longestPalindromeRec(string: String): String {
+        for (i in string.indices) {
+            checkString(string, i, i + 1)
+            checkString(string, i - 1, i + 1)
+        }
+        return string.substring(left, right + 1)
+    }
+
+    private fun checkString(
+        string: String,
+        leftIndex: Int,
+        rightIndex: Int
+    ) {
+        if (leftIndex < 0 || rightIndex == string.length) return
+        if (string[leftIndex] != string[rightIndex]) return
+        val diff = rightIndex - leftIndex
+        if (diff > max) {
+            left = leftIndex
+            right = rightIndex
+            max = diff
+        }
+        checkString(string, leftIndex - 1, rightIndex + 1)
     }
 
     private fun longestPalindromeTopToBottom(string: String): String {
