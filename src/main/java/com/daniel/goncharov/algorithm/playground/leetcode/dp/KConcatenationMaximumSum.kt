@@ -4,6 +4,9 @@ import kotlin.math.max
 
 class KConcatenationMaximumSum {
 
+//    breaks when [-5,-2,0,0,3,9,-2,-5,4]
+//    5
+
     fun kConcatenationMaxSum(arr: IntArray, repeatTime: Int): Int {
         if (arr.isEmpty()) return 0
         val maxPrefix = maxPrefix(arr)
