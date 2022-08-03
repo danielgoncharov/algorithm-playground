@@ -9,27 +9,31 @@ class KConcatenationMaximumSum {
 
     fun kConcatenationMaxSum(arr: IntArray, repeatTime: Int): Int {
         if (arr.isEmpty()) return 0
-        val maxPrefix = maxPrefix(arr)
-        val wholeArray = arr.sum()
         val maxSubArray = maxSubArray(arr)
+        if (repeatTime == 1) return maxSubArray
+
+        val maxPrefix = maxPrefix(arr)
         arr.reverse()
         val maxSufix = maxPrefix(arr)
+
+        val wholeArray = arr.sum()
 
         return arrayListOf(
             maxPrefix + maxSufix,
             wholeArray * repeatTime,
             maxSubArray,
-            0
+            0,
+            wholeArray * (repeatTime - 2) + maxPrefix + maxSufix
         ).maxOrNull() ?: 0
     }
 
     fun maxPrefix(nums: IntArray): Int {
         var localMax = nums.first()
+        var sum = nums.first()
         for (index in 1 until nums.size) {
             val number = nums[index]
-            if (number >= localMax + number) {
-                return localMax
-            }
+            sum += number
+            localMax = max(sum, localMax)
         }
         return localMax
     }
