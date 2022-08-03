@@ -4,9 +4,6 @@ import kotlin.math.max
 
 class KConcatenationMaximumSum {
 
-//    breaks when [-5,-2,0,0,3,9,-2,-5,4]
-//    5
-
     fun kConcatenationMaxSum(arr: IntArray, repeatTime: Int): Int {
         if (arr.isEmpty()) return 0
         val maxSubArray = maxSubArray(arr)
@@ -16,15 +13,27 @@ class KConcatenationMaximumSum {
         arr.reverse()
         val maxSufix = maxPrefix(arr)
 
-        val wholeArray = arr.sum()
+        val wholeArraySum = arr.sum() % 1000000007
 
-        return arrayListOf(
-            maxPrefix + maxSufix,
-            wholeArray * repeatTime,
-            maxSubArray,
-            0,
-            wholeArray * (repeatTime - 2) + maxPrefix + maxSufix
-        ).maxOrNull() ?: 0
+        return if (wholeArraySum >= 0) {
+            max(
+                mult(wholeArraySum, repeatTime - 2) + maxPrefix + maxSufix,
+                maxSubArray
+            )
+        } else {
+            max(
+                (maxPrefix + maxSufix),
+                maxSubArray
+            )
+        } % 1000000007
+    }
+
+    fun mult(init: Int, time: Int): Int {
+        var sum = 0
+        repeat(time) {
+            sum = (sum + init) % 1000000007
+        }
+        return sum
     }
 
     fun maxPrefix(nums: IntArray): Int {
@@ -48,7 +57,7 @@ class KConcatenationMaximumSum {
                 max = localMax
             }
         }
-        return max
+        return if (max < 0) 0 else max
     }
 }
 
