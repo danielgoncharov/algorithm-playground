@@ -1,39 +1,31 @@
 package com.daniel.goncharov.algorithm.playground.leetcode.dp
 
+import kotlin.math.max
+
 class MaximumEarningsFromTaxi {
 
     fun maxTaxiEarnings(endStop: Int, rides: Array<IntArray>): Long {
-        val cache = HashMap<Int, Long>()
+        val cache = MutableList(endStop + 1) { 0L }
         val typedRides = rides.map { ride -> Ride(ride[0], ride[1], ride[2]) }
-        return calculateEarning(StartRide, typedRides, cache)
+            .sortedBy { it.start }
+            .forEach { ride ->
+                cache[ride.end] = max(cache[ride.end], ride.profit + maxFrom(ride.start, cache))
+            }
+
+        return cache.maxOrNull() ?: 0
     }
 
-    private fun calculateEarning(
-        currentRide: Ride,
-        rides: List<Ride>,
-        cache: MutableMap<Int, Long>
-    ): Long {
-        if (cache.containsKey(currentRide.start)) {
-            return cache[currentRide.start] ?: 0
+    private fun maxFrom(start: Int, cache: MutableList<Long>): Long {
+        var maxFrom = Long.MIN_VALUE
+        for (index in 0 until start + 1) {
+            maxFrom = max(maxFrom, cache[index])
         }
-        val maxLaterRideProfit = rides
-            .filter { rideToFilter -> rideToFilter.start >= currentRide.end }
-            .map { newRide ->
-                calculateEarning(
-                    newRide,
-                    rides,
-                    cache
-                )
-            }
-            .maxOrNull() ?: 0L
-        cache[currentRide.start] = currentRide.profit + maxLaterRideProfit
-        return cache[currentRide.start] ?: 0
+        return maxFrom
     }
+
 }
 
 data class Ride(val start: Int, val end: Int, val tip: Int) {
     val profit = end - start + tip
-
 }
 
-val StartRide = Ride(0, 0, 0)
