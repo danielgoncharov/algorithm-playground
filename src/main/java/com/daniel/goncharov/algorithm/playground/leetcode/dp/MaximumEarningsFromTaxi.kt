@@ -6,7 +6,7 @@ class MaximumEarningsFromTaxi {
 
     fun maxTaxiEarnings(endStop: Int, rides: Array<IntArray>): Long {
         val cache = MutableList(endStop + 1) { 0L }
-        val typedRides = rides.map { ride -> Ride(ride[0], ride[1], ride[2]) }
+        rides.map { ride -> Ride(ride[0], ride[1], ride[2]) }
             .sortedBy { it.start }
             .forEach { ride ->
                 cache[ride.end] = max(cache[ride.end], ride.profit + maxFrom(ride.start, cache))
