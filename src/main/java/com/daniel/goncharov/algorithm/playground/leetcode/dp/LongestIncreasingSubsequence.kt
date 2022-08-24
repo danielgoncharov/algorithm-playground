@@ -14,7 +14,7 @@ class LongestIncreasingSubsequence {
 
     //find max value of cache that is value of nums less than start
     private fun maxFrom(start: Int, array: IntArray, cache: MutableList<Int>): Int {
-        var maxFrom = Int.MIN_VALUE
+        var maxFrom = 0
         for (index in start - 1 downTo 0) {
             if (array[index] < array[start]) {
                 maxFrom = maxOf(cache[index], maxFrom)
