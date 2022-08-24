@@ -2,22 +2,24 @@ package com.daniel.goncharov.algorithm.playground.leetcode.dp
 
 class LongestIncreasingSubsequence {
 
-    private val TOP_LAYER = -1
+    //Goal nlogn. Some kind of a tree? priority queue? Heap
 
     fun lengthOfLIS(nums: IntArray): Int {
-        return findLongest(TOP_LAYER, nums)
+        val cache = MutableList(nums.size) { 1 }
+        for (index in 1 until nums.size) {
+            cache[index] = maxFrom(index, nums, cache) + 1
+        }
+        return cache.maxOrNull() ?: 0
     }
 
-    private fun findLongest(
-        lastPickedIndex: Int,
-        nums: IntArray
-    ): Int {
-        var maxLength = 0
-        for (nextPickIndex in lastPickedIndex + 1 until nums.size) {
-            if (lastPickedIndex == TOP_LAYER || nums[nextPickIndex] > nums[lastPickedIndex]) {
-                maxLength = maxOf(maxLength, findLongest(nextPickIndex, nums) + 1)
+    //find max value of cache that is value of nums less than start
+    private fun maxFrom(start: Int, array: IntArray, cache: MutableList<Int>): Int {
+        var maxFrom = Int.MIN_VALUE
+        for (index in start - 1 downTo 0) {
+            if (array[index] < array[start]) {
+                maxFrom = maxOf(cache[index], maxFrom)
             }
         }
-        return maxLength
+        return maxFrom
     }
 }
