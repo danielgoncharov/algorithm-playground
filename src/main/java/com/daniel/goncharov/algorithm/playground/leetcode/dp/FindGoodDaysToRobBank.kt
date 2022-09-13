@@ -3,33 +3,34 @@ package com.daniel.goncharov.algorithm.playground.leetcode.dp
 class FindGoodDaysToRobBank {
 
     fun goodDaysToRobBank(security: IntArray, time: Int): List<Int> {
-        val table = MutableList(time + 1) { row ->
-            MutableList(security.size + 2) { column ->
-                if (column == 0 || column == security.size + 1) {
-                    false
-                } else row == 0
-            }
-        }
-
         val result = mutableListOf<Int>()
-        for (i in 1 until time + 1) {
-            for (j in 1 until security.size + 1) {
-                if (i == time) {
-                    table[i][j] = table[i - 1][j - 1] &&
-                            table[i - 1][j] &&
-                            table[i - 1][j + 1] &&
-                            security[j - 2] >= security[j - 1] && security[j - 1] <= security[j + 1]
-                } else {
-                    table[i][j] =
-                }
-                if (i == time && table[i][j]) {
-                    result.add(j - 1)
-                }
+
+        for (i in security.indices) {
+            if (isGoodDay(i, security, time)) {
+                result.add(i)
             }
         }
 
         return result
     }
 
+    private fun isGoodDay(day: Int, security: IntArray, time: Int): Boolean {
+        if (day - time < 0 || day + time >= security.size) return false
+        var current = security[day]
+        for (i in day + 1 until day + time + 1) {
+            if (current > security[i]) {
+                return false
+            }
+            current = security[i]
+        }
+        current = security[day]
+        for (i in day - 1 downTo day - time) {
+            if (current > security[i]) {
+                return false
+            }
+            current = security[i]
+        }
+        return true
+    }
 
 }
