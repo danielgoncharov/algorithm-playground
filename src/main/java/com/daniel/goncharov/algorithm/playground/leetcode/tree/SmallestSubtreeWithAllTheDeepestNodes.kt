@@ -30,6 +30,9 @@ class SmallestSubtreeWithAllTheDeepestNodes {
         }
 
         var deepestLeaf = deepestLevel.map(Level::node)
+        if (deepestLeaf.size == 1) {
+            return deepestLeaf.first()
+        }
         while (deepestLeaf.isNotEmpty()) {
             val set = hashSetOf<TreeNode>()
             for (leaf in deepestLeaf) {
@@ -53,7 +56,7 @@ class SmallestSubtreeWithAllTheDeepestNodes {
     private fun ArrayDeque<Level>.addElement(level: Level, node: TreeNode?, parentMap: HashMap<TreeNode, TreeNode?>) {
         if (node != null) {
             parentMap[node] = level.node
-            add(Level(level.node.`val` + 1, node))
+            add(Level(level.level + 1, node))
         }
     }
 
