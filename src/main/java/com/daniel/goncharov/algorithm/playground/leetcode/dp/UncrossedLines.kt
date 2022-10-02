@@ -5,76 +5,25 @@ import kotlin.math.max
 class UncrossedLines {
 
     // are there any duplicates?
-    fun maxUncrossedLines(nums1: IntArray, nums2: IntArray): Int {
-        val map = mutableMapOf<Int, Int>()
-        for (i in nums2.indices) {
-            map[nums2[i]] = i
-        }
-        return findMax(
-            Interval(0, nums1.size - 1, 0),
-            Interval(0, nums2.size - 1, 0),
-            nums1,
-            map
-        )
+
+    fun maxUncrossedLines(arrayA: IntArray, arrayB: IntArray): Int {
+        return findMaxLines(arrayA, 0, arrayB, 0)
     }
 
-    private fun findMax(
-        num1AllowedInterval: Interval,
-        num2AllowedInterval: Interval,
-        nums1: IntArray,
-        indexMap: Map<Int, Int>
+    private fun findMaxLines(
+        arrayA: IntArray,
+        aIndex: Int,
+        arrayB: IntArray,
+        bIndex: Int
     ): Int {
-        if (!num1AllowedInterval.isValidInterval() || !num2AllowedInterval.isValidInterval()) return 0
-        val valInNum1 = nums1[num1AllowedInterval.index]
-        val indexInNum2 = indexMap[valInNum1]
-            ?: return findMax(
-                num1AllowedInterval.dontDrawLine(),
-                num2AllowedInterval,
-                nums1,
-                indexMap
+        if (aIndex == arrayA.size || bIndex == arrayB.size) return 0
+        return if (arrayA[aIndex] == arrayB[bIndex]) {
+            1 + findMaxLines(arrayA, aIndex + 1, arrayB, bIndex + 1)
+        } else {
+            max(
+                findMaxLines(arrayA, aIndex + 1, arrayB, bIndex),
+                findMaxLines(arrayA, aIndex, arrayB, bIndex + 1)
             )
-        val num2AllowedIntervalWithIndex = num2AllowedInterval.copy(index = indexInNum2)
-        return max(
-            findMax(
-                num1AllowedInterval.dontDrawLine(),
-                num2AllowedInterval,
-                nums1,
-                indexMap
-            ),
-            findMax(
-                num1AllowedInterval.drawLineLeftInterval(),
-                num2AllowedIntervalWithIndex.drawLineLeftInterval(),
-                nums1,
-                indexMap
-            ) +
-                    findMax(
-                        num1AllowedInterval.drawLineRightInterval(),
-                        num2AllowedIntervalWithIndex.drawLineRightInterval(),
-                        nums1,
-                        indexMap
-                    ) +
-                    1
-        )
-    }
-
-
-    data class Interval(
-        val left: Int,
-        val right: Int,
-        val index: Int
-    ) {
-        fun isValidInterval(): Boolean = left <= right && index >= left && index <= right
-
-        fun dontDrawLine(): Interval {
-            return copy(index = index + 1)
-        }
-
-        fun drawLineLeftInterval(): Interval {
-            return copy(right = index - 1)
-        }
-
-        fun drawLineRightInterval(): Interval {
-            return copy(left = index + 1)
         }
     }
 
