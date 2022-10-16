@@ -4,7 +4,7 @@ class PrintWordsVertically {
 
     fun printVertically(input: String): List<String> {
         val words = input.split("\\s".toRegex())
-        val maxSize = words.maxBy(String::length)?.length ?: 0
+        val maxSize = words.maxByOrNull(String::length)?.length ?: 0
         val result = mutableListOf<String>()
         for (index in 0 until maxSize) {
             words.map { it.getOrNull(index) ?: ' ' }
