@@ -4,8 +4,42 @@ import java.lang.Integer.max
 
 
 class PartitionArrayForMaximumSum {
+    fun maxSumAfterPartitioning(array: IntArray, windowSize: Int): Int {
+        val cache = initCache(array, windowSize)
+        val maxes = initMaxes(array)
 
-    fun maxSumAfterPartitioning(array: IntArray, window: Int): Int {
+        for (currentWindow in 0 until windowSize) {
+            for (index in array.indices) {
+                if (index < currentWindow + 1) {
+                    cache[currentWindow][index] = maxes[index][index + currentWindow + 1]
+                } else {
+                    var max = Int.MIN_VALUE
+                    for (left in index downTo index - currentWindow) {
+                        max = max(max, array[left - 1] + maxes[left][index])
+                    }
+                    cache[currentWindow][index] = max
+                }
+            }
+        }
+
+        return cache[windowSize - 1][array.size - 1]
+    }
+
+    private fun initCache(array: IntArray, windowSize: Int): MutableList<MutableList<Int>> {
+        return MutableList(windowSize) { i ->
+            MutableList(array.size) { j ->
+                if (i == 0) {
+                    array[j]
+                } else if (j == 0) {
+                    array[j]
+                } else {
+                    0
+                }
+            }
+        }
+    }
+
+    private fun initMaxes(array: IntArray): MutableList<MutableList<Int>> {
         val maxes: MutableList<MutableList<Int>> = MutableList(array.size) { i ->
             MutableList(array.size) { j ->
                 if (i == j) {
@@ -20,19 +54,6 @@ class PartitionArrayForMaximumSum {
                 maxes[i][j] = max(maxes[i][j - 1], maxes[i + 1][j])
             }
         }
-        return solveRecursive(0, maxes, window)
-    }
-
-    private fun solveRecursive(
-        index: Int,
-        maxes: List<List<Int>>,
-        window: Int
-    ): Int {
-        var max = Int.MIN_VALUE
-        val until = if (index + window > maxes.size) maxes.size else index + window
-        for (i in index until until) {
-            max = max(max, maxes[index][i] + solveRecursive(i, maxes, window))
-        }
-        return max
+        return maxes
     }
 }
