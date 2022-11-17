@@ -11,11 +11,11 @@ class PartitionArrayForMaximumSum {
         for (currentWindow in 0 until windowSize) {
             for (index in array.indices) {
                 if (index < currentWindow + 1) {
-                    cache[currentWindow][index] = maxes[index][index + currentWindow + 1]
+                    cache[currentWindow][index] = maxes[index][index + currentWindow + 1] * (currentWindow + 1)
                 } else {
                     var max = Int.MIN_VALUE
                     for (left in index downTo index - currentWindow) {
-                        max = max(max, array[left - 1] + maxes[left][index])
+                        max = max(max, cache[currentWindow][left] + maxes[left][index])
                     }
                     cache[currentWindow][index] = max
                 }
