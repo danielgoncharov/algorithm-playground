@@ -2,8 +2,6 @@ package com.daniel.goncharov.algorithm.playground.leetcode.dp
 
 import kotlin.math.min
 import kotlin.math.sqrt
-import kotlin.math.ulp
-
 
 class PerfectSquares {
 
@@ -27,6 +25,6 @@ class PerfectSquares {
             var remainingNumber = number - root * root
             min = min(min, leastNumSquares(remainingNumber))
         }
-        return min
+        return min + 1
     }
 }
