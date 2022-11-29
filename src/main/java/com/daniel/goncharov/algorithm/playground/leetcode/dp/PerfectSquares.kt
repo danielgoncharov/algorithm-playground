@@ -5,26 +5,26 @@ import kotlin.math.sqrt
 
 class PerfectSquares {
 
-    fun numSquares(n: Int): Int {
+    fun numSquares(number: Int): Int {
+        val mutableList = MutableList(number) { 0 }
+        for (index in mutableList.indices) {
+            var number = index + 1
+            val root = sqrt(number.toFloat())
+                .toString()
+                .split(".")
+            val rootInt = root.first().toInt()
 
-    }
-
-    private fun leastNumSquares(number: Int): Int {
-        if (number == 0) return 0
-
-        val root = sqrt(number.toFloat())
-            .toString()
-            .split(".")
-        val rootInt = root.first().toInt()
-        val rootDec = root.last().toInt()
-
-        if (rootDec == 0) return 1
-
-        var min = Int.MAX_VALUE
-        for (root in rootInt downTo 1) {
-            var remainingNumber = number - root * root
-            min = min(min, leastNumSquares(remainingNumber))
+            val rootDec = root.last().toInt()
+            if (rootDec == 0) {
+                mutableList[index] = 1
+            } else {
+                var min = Int.MAX_VALUE
+                for (decrement in rootInt downTo 1) {
+                    min = min(min, mutableList[number - decrement * decrement - 1])
+                }
+                mutableList[index] = 1 + min
+            }
         }
-        return min + 1
+        return mutableList[number - 1]
     }
 }
